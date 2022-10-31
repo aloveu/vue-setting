@@ -1,17 +1,21 @@
-<!DOCTYPE html>
-<html lang="">
-  <head>
+<!doctype html>
+<html lang="en">
+<head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title><%= htmlWebpackPlugin.options.title %></title>
-  </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+    <title>ADMIN</title>
+    <base href="/">
+    <meta name="robots" content="noindex">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div id="app">
+    <div class="progress-spinner-area">
+        <div class="p-progress-spinner">
+            <svg class="p-progress-spinner-svg" viewBox="25 25 50 50" style="animation-duration: 1s;">
+                <circle class="p-progress-spinner-circle" cx="50" cy="50" r="20" stroke-miterlimit="10" fill="none" stroke-width="2"></circle>
+            </svg>
+        </div>
+    </div>
+</div>
+</body>
 </html>

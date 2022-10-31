@@ -1,30 +1,38 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+    <div>
+        <Header />
+        <article class="contents">
+            <Navbar />
+            <div class="content-container">
+                <BreadCrumb />
+                <section class="content">
+                    <router-view />
+                    <Footer />
+                </section>
+            </div>
+        </article>
+    </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import Navbar from '@/components/layout/Navbar.vue';
+import Header from '@/components/layout/Header.vue';
+import Footer from '@/components/layout/Footer.vue';
+import BreadCrumb from '@/components/layout/BreadCrumb.vue';
 
-nav {
-  padding: 30px;
+export default {
+    components: { Footer, Header, Navbar, BreadCrumb },
+};
+</script>
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+<style scoped lang="scss">
+.contents {
+    padding-top: 80px;
+    .content-container {
+        position: relative;
+        float: right;
+        width: calc(100% - 200px);
+        height: 100%;
     }
-  }
 }
 </style>
