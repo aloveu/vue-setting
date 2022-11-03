@@ -15,5 +15,6 @@ module.exports = {
         'vue/multi-word-component-names': 'off',
         'object-curly-spacing': 'error',
         'object-curly-newline': 'off',
+        'max-len': ['error', { code: 250 }],
     },
 };

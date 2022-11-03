@@ -16,11 +16,11 @@ body {
     outline: none;
     font-family: 'RobotoRegular', sans-serif;
     word-wrap: break-word;
+    color: inherit;
 }
 
 a {
     text-decoration: none;
-    color: #007ce8;
 }
 
 th {
@@ -100,21 +100,4 @@ fieldset {
 }
 .text-capitalize {
     text-transform: capitalize !important;
-}
-
-.stakers-note {
-    em {
-        font-style: italic !important;
-    }
-    strong {
-        font-weight: bold !important;
-    }
-    u {
-        text-decoration: underline !important;
-    }
-    a {
-        &:hover {
-            text-decoration: underline !important;
-        }
-    }
 }

@@ -1,15 +1,15 @@
 import BrandList from '@/views/brand/BrandList.vue';
 
-const BrandRoutes = [
+const PaymentRoutes = [
     {
         path: 'list',
         alias: '',
         component: BrandList,
         meta: {
-            title: 'Brand List',
-            icon: 'pi pi-fw pi-cog',
+            title: 'PSP Balance',
+            icon: 'pi pi-fw pi-dollar',
         },
     },
 ];
 
-export default BrandRoutes;
+export default PaymentRoutes;

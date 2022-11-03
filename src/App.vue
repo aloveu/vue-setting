@@ -33,6 +33,11 @@ export default {
         float: right;
         width: calc(100% - 200px);
         height: 100%;
+        padding: 30px;
+        .content {
+            border-radius: 10px;
+            background-color: #f6f8f9;
+        }
     }
 }
 </style>
