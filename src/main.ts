@@ -3,7 +3,7 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import App from '@/App.vue';
 import '@/registerServiceWorker';
-import router from '@/router';
+import { router } from '@/router';
 // primeVue
 import PrimeVue from 'primevue/config';
 import 'primevue/resources/themes/saga-blue/theme.css';

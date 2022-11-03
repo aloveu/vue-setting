@@ -9,7 +9,7 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: '/login',
         alias: '/',
-        component: LoginView,
+        component: () => import(/* webpackChunkName: "auth" */ '@/views/LoginView.vue'),
         meta: {
             title: 'Login',
         },
@@ -69,4 +69,4 @@ const router = createRouter({
     routes,
 });
 
-export default router;
+export { router, routes };
