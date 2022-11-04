@@ -76,7 +76,7 @@ router.beforeEach(async (to, from, next) => {
         const authStore = useAuthStore();
 
         if (!authStore.isLogin) {
-            next({ name: 'Login', query: { returnUrl: to.fullPath } });
+            next({ name: 'Login', query: { refUrl: to.fullPath } });
         } else {
             next();
         }

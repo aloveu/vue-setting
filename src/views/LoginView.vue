@@ -44,10 +44,9 @@ const password = ref('');
 
 // mount 전 hook
 onBeforeMount(() => {
-    console.log(route.params);
     if (authStore.isLogin) {
-        console.log('로그인!');
-        router.replace('/report');
+        const refUrl = route.query?.refUrl;
+        router.replace(refUrl ? `${refUrl}` : '/report');
     }
 });
 
