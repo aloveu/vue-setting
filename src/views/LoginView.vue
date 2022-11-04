@@ -7,7 +7,7 @@
                     <span class="p-inputgroup-addon">
                         <i class="pi pi-user"></i>
                     </span>
-                    <InputText v-model="email" placeholder="Username" />
+                    <InputText v-model="email" v-focus placeholder="Username" />
                 </div>
                 <div class="p-inputgroup">
                     <span class="p-inputgroup-addon">

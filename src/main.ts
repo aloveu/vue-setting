@@ -30,6 +30,15 @@ app.use(createPinia());
 app.use(router);
 app.use(PrimeVue);
 app.use(ToastService);
+
+app.directive('focus', {
+    // When the bound element is mounted into the DOM...
+    mounted(el) {
+        // Focus the element
+        el.focus();
+    },
+});
+
 app.mount('#app');
 
 // component 전역 등록
