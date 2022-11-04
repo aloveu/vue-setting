@@ -1,7 +1,89 @@
 <template>
-    <div class="login">Login 페이지</div>
+    <div class="login">
+        <Card style="border-radius: 6px">
+            <template #title>Login</template>
+            <template #content>
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon">
+                        <i class="pi pi-user"></i>
+                    </span>
+                    <InputText v-model="email" placeholder="Username" />
+                </div>
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon">
+                        <i class="pi pi-lock"></i>
+                    </span>
+                    <Password v-model="password" @keydown.enter="handleLogin" :feedback="false" placeholder="Password" />
+                </div>
+            </template>
+            <template #footer>
+                <Button @click="handleLogin" icon="pi pi-sign-in" label="LOGIN"></Button>
+            </template>
+        </Card>
+    </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+// import
+import { onBeforeMount, ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { useToast } from 'primevue/usetoast';
+import useAuthStore from '@/store/auth';
+import Password from 'primevue/password';
+import Card from 'primevue/card';
 
-<style scoped lang="scss"></style>
+// util
+const router = useRouter();
+const route = useRoute();
+const toast = useToast();
+const authStore = useAuthStore();
+
+// data
+const email = ref('');
+const password = ref('');
+
+// mount 전 hook
+onBeforeMount(() => {
+    console.log(route.params);
+    if (authStore.isLogin) {
+        console.log('로그인!');
+        router.replace('/report');
+    }
+});
+
+// data handle
+const handleLogin = async () => {
+    try {
+        // TODO: auth login api 호출
+
+        if (email.value === 'admin' && password.value === '1234') {
+            authStore.isLogin = true;
+        } else {
+            throw Error;
+        }
+    } catch (e) {
+        console.log(e);
+        toast.add({
+            severity: 'error',
+            summary: 'Fail',
+            detail: 'Login Failed!',
+            life: 2000,
+        });
+    }
+};
+</script>
+
+<style scoped lang="scss">
+.login {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 500px;
+    .p-inputgroup {
+        height: 50px;
+        margin-bottom: 5px;
+    }
+}
+</style>

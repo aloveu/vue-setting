@@ -9,6 +9,10 @@ import PrimeVue from 'primevue/config';
 import 'primevue/resources/themes/saga-blue/theme.css';
 import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css';
+import ToastService from 'primevue/toastservice';
+import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
+
 // dayjs
 import * as dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -22,7 +26,12 @@ dayjs.extend(isBetween);
 dayjs.extend(duration);
 
 const app = createApp(App);
-app.use(router);
 app.use(createPinia());
+app.use(router);
 app.use(PrimeVue);
+app.use(ToastService);
 app.mount('#app');
+
+// component 전역 등록
+app.component('InputText', InputText);
+app.component('Button', Button);

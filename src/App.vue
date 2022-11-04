@@ -2,27 +2,32 @@
     <div>
         <Header />
         <article class="contents">
-            <Navbar />
-            <div class="content-container">
-                <BreadCrumb />
-                <section class="content">
-                    <router-view />
-                    <Footer />
-                </section>
-            </div>
+            <template v-if="authStore.isLogin">
+                <Navbar />
+                <div class="content-container">
+                    <BreadCrumb />
+                    <section class="content">
+                        <router-view />
+                        <Footer />
+                    </section>
+                </div>
+            </template>
+            <router-view v-else />
         </article>
+
+        <Toast />
     </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import Toast from 'primevue/toast';
 import Navbar from '@/components/layout/Navbar.vue';
 import Header from '@/components/layout/Header.vue';
 import Footer from '@/components/layout/Footer.vue';
 import BreadCrumb from '@/components/layout/BreadCrumb.vue';
+import useAuthStore from '@/store/auth';
 
-export default {
-    components: { Footer, Header, Navbar, BreadCrumb },
-};
+const authStore = useAuthStore();
 </script>
 
 <style scoped lang="scss">
