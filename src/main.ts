@@ -4,6 +4,8 @@ import { createPinia } from 'pinia';
 import App from '@/App.vue';
 import '@/registerServiceWorker';
 import { router } from '@/router';
+import { focus, digitOnly } from '@/directives';
+
 // primeVue
 import PrimeVue from 'primevue/config';
 import 'primevue/resources/themes/saga-blue/theme.css';
@@ -31,16 +33,12 @@ app.use(router);
 app.use(PrimeVue);
 app.use(ToastService);
 
-app.directive('focus', {
-    // When the bound element is mounted into the DOM...
-    mounted(el) {
-        // Focus the element
-        el.focus();
-    },
-});
-
 app.mount('#app');
 
 // component 전역 등록
 app.component('InputText', InputText);
 app.component('Button', Button);
+
+// directive 등록
+app.directive('focus', focus);
+app.directive('digitOnly', digitOnly);
