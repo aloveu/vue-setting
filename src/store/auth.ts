@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { DTO } from '@/models';
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
@@ -6,7 +7,7 @@ export const useAuthStore = defineStore('auth', {
         userInfo: {},
     }),
     actions: {
-        registerAdmin(userInfo) {
+        registerAdmin(userInfo: DTO.Common.Info) {
             this.isLogin = true;
             this.userInfo = userInfo;
         },
