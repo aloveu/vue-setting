@@ -25,7 +25,7 @@ import Navbar from '@/components/layout/Navbar.vue';
 import Header from '@/components/layout/Header.vue';
 import Footer from '@/components/layout/Footer.vue';
 import BreadCrumb from '@/components/layout/BreadCrumb.vue';
-import useAuthStore from '@/store/auth';
+import { useAuthStore } from '@/store/auth';
 
 const authStore = useAuthStore();
 </script>

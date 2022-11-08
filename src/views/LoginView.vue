@@ -28,7 +28,7 @@
 import { onBeforeMount, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useToast } from 'primevue/usetoast';
-import useAuthStore from '@/store/auth';
+import { useAuthStore } from '@/store/auth';
 import Password from 'primevue/password';
 import Card from 'primevue/card';
 
@@ -56,7 +56,9 @@ const handleLogin = async () => {
         // TODO: auth login api 호출
 
         if (email.value === 'admin' && password.value === '1234') {
-            authStore.isLogin = true;
+            authStore.registerAdmin({
+                name: '김광훈',
+            });
         } else {
             throw Error;
         }

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import useAuthStore from '@/store/auth';
+import { useAuthStore } from '@/store/auth';
 import LoginView from '@/views/LoginView.vue';
 import NotFoundView from '@/views/NotFoundView.vue';
 import brandRoute from '@/router/brand-route';

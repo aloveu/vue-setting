@@ -1,9 +1,17 @@
 import { defineStore } from 'pinia';
 
-const useAuthStore = defineStore('auth', () => {
-    const isLogin = false;
-
-    return { isLogin };
+export const useAuthStore = defineStore('auth', {
+    state: () => ({
+        isLogin: false,
+        userInfo: {},
+    }),
+    actions: {
+        registerAdmin(userInfo) {
+            this.isLogin = true;
+            this.userInfo = userInfo;
+        },
+    },
+    persist: {
+        storage: sessionStorage,
+    },
 });
-
-export default useAuthStore;

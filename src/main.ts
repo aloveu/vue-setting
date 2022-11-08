@@ -5,6 +5,7 @@ import App from '@/App.vue';
 import '@/registerServiceWorker';
 import { router } from '@/router';
 import { focus, digitOnly } from '@/directives';
+import { createPersistedState } from 'pinia-plugin-persistedstate';
 
 // primeVue
 import PrimeVue from 'primevue/config';
@@ -28,7 +29,9 @@ dayjs.extend(isBetween);
 dayjs.extend(duration);
 
 const app = createApp(App);
-app.use(createPinia());
+const pinia = createPinia();
+pinia.use(createPersistedState());
+app.use(pinia);
 app.use(router);
 app.use(PrimeVue);
 app.use(ToastService);
