@@ -5,6 +5,7 @@ import NotFoundView from '@/views/NotFoundView.vue';
 import brandRoute from '@/router/brand-route';
 import reportRoute from '@/router/report-route';
 import paymentRoute from '@/router/payment-route';
+import demoRoute from '@/router/demo-route';
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -14,6 +15,15 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import(/* webpackChunkName: "auth" */ '@/views/LoginView.vue'),
         meta: {
             title: 'Login',
+        },
+    },
+    {
+        path: '/demo',
+        children: demoRoute,
+        meta: {
+            requireLogin: true,
+            title: 'Demo',
+            icon: 'pi pi-fw pi-folder-open',
         },
     },
     {

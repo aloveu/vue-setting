@@ -5,6 +5,7 @@ import App from '@/App.vue';
 import '@/registerServiceWorker';
 import { router } from '@/router';
 import { focus, digitOnly } from '@/directives';
+import { filters } from '@/helper';
 import { createPersistedState } from 'pinia-plugin-persistedstate';
 
 // primeVue
@@ -45,3 +46,6 @@ app.component('Button', Button);
 // directive 등록
 app.directive('focus', focus);
 app.directive('digitOnly', digitOnly);
+
+// filter 등록
+app.config.globalProperties.$filters = filters;

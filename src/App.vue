@@ -1,22 +1,18 @@
 <template>
-    <div>
-        <Header />
-        <article class="contents">
-            <template v-if="authStore.isLogin">
-                <Navbar />
-                <div class="content-container">
-                    <BreadCrumb />
-                    <section class="content">
-                        <router-view />
-                        <Footer />
-                    </section>
-                </div>
-            </template>
-            <router-view v-else />
-        </article>
+    <Header />
+    <article class="contents">
+        <template v-if="authStore.isLogin">
+            <Navbar />
+            <div class="content-container">
+                <BreadCrumb />
+                <router-view />
+                <Footer />
+            </div>
+        </template>
+        <router-view v-else />
+    </article>
 
-        <Toast />
-    </div>
+    <Toast />
 </template>
 
 <script setup lang="ts">
@@ -39,10 +35,6 @@ const authStore = useAuthStore();
         width: calc(100% - 200px);
         height: 100%;
         padding: 30px;
-        .content {
-            border-radius: 10px;
-            background-color: #f6f8f9;
-        }
     }
 }
 </style>
