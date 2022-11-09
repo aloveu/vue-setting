@@ -1,10 +1,8 @@
-import BrandList from '@/views/brand/BrandList.vue';
-
 const BrandRoutes = [
     {
         path: 'list',
         alias: '',
-        component: BrandList,
+        component: () => import(/* webpackChunkName: "brandList" */ '@/views/brand/BrandList.vue'),
         meta: {
             title: 'Brand List',
             icon: 'pi pi-fw pi-cog',

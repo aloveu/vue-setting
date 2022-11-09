@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { useAuthStore } from '@/store/auth';
-import LoginView from '@/views/LoginView.vue';
-import NotFoundView from '@/views/NotFoundView.vue';
 import brandRoute from '@/router/brand-route';
 import reportRoute from '@/router/report-route';
 import paymentRoute from '@/router/payment-route';
@@ -28,7 +26,7 @@ const routes: Array<RouteRecordRaw> = [
     },
     {
         path: '/user',
-        component: LoginView,
+        component: () => import(/* webpackChunkName: "auth" */ '@/views/LoginView.vue'),
         meta: {
             requireLogin: true,
             title: 'User',
@@ -62,17 +60,8 @@ const routes: Array<RouteRecordRaw> = [
         },
     },
     {
-        path: '/maintenance',
-        component: NotFoundView,
-        meta: {
-            requireLogin: true,
-            title: 'Maintenance',
-            icon: 'pi pi-fw pi-cog',
-        },
-    },
-    {
         path: '/:catchAll(.*)',
-        component: NotFoundView,
+        component: () => import(/* webpackChunkName: "notfound" */ '@/views/NotFoundView.vue'),
     },
 ];
 

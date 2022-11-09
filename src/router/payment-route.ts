@@ -1,10 +1,8 @@
-import BrandList from '@/views/brand/BrandList.vue';
-
 const PaymentRoutes = [
     {
         path: 'list',
         alias: '',
-        component: BrandList,
+        component: () => import(/* webpackChunkName: "brand" */ '@/views/brand/BrandList.vue'),
         meta: {
             title: 'PSP Balance',
             icon: 'pi pi-fw pi-dollar',

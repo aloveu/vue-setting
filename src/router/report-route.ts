@@ -1,11 +1,8 @@
-import Dashboard from '@/views/report/Dashboard.vue';
-import PaymentReport from '@/views/report/PaymentReport.vue';
-
 const reportRoutes = [
     {
         path: 'dashboard',
         alias: '',
-        component: Dashboard,
+        component: () => import(/* webpackChunkName: "report" */ '@/views/report/Dashboard.vue'),
         meta: {
             title: 'Dashboard',
             icon: 'pi pi-fw pi-chart-line',
@@ -13,7 +10,7 @@ const reportRoutes = [
     },
     {
         path: 'payment',
-        component: PaymentReport,
+        component: () => import(/* webpackChunkName: "report" */ '@/views/report/PaymentReport.vue'),
         meta: {
             title: 'Payment Report',
             icon: 'pi pi-fw pi-dollar',
