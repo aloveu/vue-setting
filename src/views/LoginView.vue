@@ -54,12 +54,13 @@ onBeforeMount(() => {
 const handleLogin = async () => {
     try {
         // TODO: auth login api 호출
+        // const res = await .....;
         const res = {
             name: '김광훈',
             accountGroup: 1,
         };
 
-        if (email.value === 'admin' && password.value === '1234') {
+        if (email.value === '1' && password.value === '1') {
             authStore.registerAdmin(res);
         } else {
             throw Error;

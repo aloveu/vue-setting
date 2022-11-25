@@ -2,12 +2,12 @@
     <div class="header">
         <h1 class="heading-title">
             <span class="logo"><img src="@/assets/img/logo.png" alt="logo" /></span>
-            <em class="admin-title"> Admin </em>
+            <em class="admin-title"> Admin {{ env }}</em>
         </h1>
 
         <div class="header-admin" v-if="false">
             <span class="admin-name"> <i class="pi pi-angle-down"></i></span>
-            <button type="button" class="button-menu" (click)="onToggleSideMenu()">
+            <button type="button" class="button-menu" @click="onToggleSideMenu">
                 <i class="pi {{isSideMenuPanelToggle ? 'pi-times' : 'pi-bars'}}"></i>
             </button>
         </div>
@@ -15,6 +15,10 @@
 </template>
 
 <script setup lang="ts">
+const env = process.env.NODE_ENV;
+
+console.log(process.env);
+
 function onToggleSideMenu() {
     console.log('토글');
 }

@@ -21,6 +21,7 @@ export const filters = {
     currencySymbol(currency: DTO.Enums.Currency = DTO.Enums.Currency.USD) {
         return DTO.Enums.CurrencySymbol[DTO.Enums.Currency[currency]] || DTO.Enums.CurrencySymbol.USD;
     },
+
     ldt(value: any, format = 'YYYY-MM-DD') {
         return dayjs.utc(value).local().format(format);
     },
