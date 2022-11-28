@@ -52,5 +52,6 @@ module.exports = {
         'consistent-return': 'off',
         'no-bitwise': 'off',
         'global-require': 'off',
+        'vuejs-accessibility/label-has-for': 'off'
     },
 };

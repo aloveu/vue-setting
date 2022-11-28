@@ -8,6 +8,13 @@ const DemoRoutes = [
         },
     },
     {
+        path: 'directives',
+        component: () => import(/* webpackChunkName: "demo" */ '@/views/demo/Directives.vue'),
+        meta: {
+            title: 'Directives',
+        },
+    },
+    {
         path: 'page-navigation',
         component: () => import(/* webpackChunkName: "demo" */ '@/views/demo/PageNavigation.vue'),
         meta: {
