@@ -48,7 +48,7 @@
         "sass-loader": "^12.0.0"
     },
     "prettier": {
-        "printWidth": 250,
+        "printWidth": 200,
         "singleQuote": true,
         "useTabs": false,
         "tabWidth": 4,

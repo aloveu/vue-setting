@@ -16,7 +16,7 @@ const DemoRoutes = [
     },
     {
         path: 'page-navigation',
-        component: () => import(/* webpackChunkName: "demo" */ '@/views/demo/PageNavigation.vue'),
+        component: () => import(/* webpackChunkName: "demo" */ '@/views/demo/PageNavigationDemo.vue'),
         meta: {
             title: 'Page Navigation',
         },
