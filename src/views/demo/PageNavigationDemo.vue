@@ -1,6 +1,9 @@
 <template>
     <h2 class="title">Page Nav</h2>
     <div class="content">
+        <ul>
+            <li v-for="i in pageOptions.pageSize" :key="i">{{ i + (pageOptions.currentPage - 1) * pageOptions.pageSize }}</li>
+        </ul>
         <PageNavigation :pageOptions="pageOptions" :isListLoading="isListLoading" @listChange="onListChangeRequested($event)" />
     </div>
 </template>
@@ -33,7 +36,7 @@ async function getList(page: number) {
         // list api 호출
         // await ... list(page);
         setTimeout(() => {
-            pageOptions.value.totalCount = 20;
+            pageOptions.value.totalCount = 300;
         }, 500);
     } catch (e) {
         console.log(e);
