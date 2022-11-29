@@ -3,6 +3,10 @@ export interface DropDownListItem {
     value: any;
 }
 
+export interface CalendarDateOptionItem extends DropDownListItem {
+    isActive: boolean;
+}
+
 export interface PageOptions {
     currentPage: number;
     pageSize: number;

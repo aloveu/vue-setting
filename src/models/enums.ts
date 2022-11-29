@@ -44,3 +44,15 @@ export enum CurrencySymbol {
     AUD = 'A$',
     CAD = 'Can$',
 }
+
+export enum DateSearchOptions {
+    AnyDate = 'AnyDate',
+    Today = 'Today',
+    Yesterday = 'Yesterday',
+    ThisWeek = 'This Week',
+    LastWeek = 'Last Week',
+    ThisMonth = 'This Month',
+    LastMonth = 'Last Month',
+    CustomRange = 'Custom Range',
+    Before24Hours = '24Hours Ago',
+}
