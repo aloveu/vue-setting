@@ -21,6 +21,13 @@ const DemoRoutes = [
             title: 'Page Navigation',
         },
     },
+    {
+        path: 'helper',
+        component: () => import(/* webpackChunkName: "demo" */ '@/views/demo/Helper.vue'),
+        meta: {
+            title: 'helper 사용',
+        },
+    },
 ];
 
 export default DemoRoutes;
