@@ -31,6 +31,7 @@ import { useToast } from 'primevue/usetoast';
 import { useAuthStore } from '@/store/auth';
 import Password from 'primevue/password';
 import Card from 'primevue/card';
+import authService from '@/services/auth.service';
 
 // util
 const router = useRouter();
@@ -53,12 +54,8 @@ onBeforeMount(() => {
 // data handle
 const handleLogin = async () => {
     try {
-        // TODO: auth login api 호출
-        // const res = await .....;
-        const res = {
-            name: '김광훈',
-            accountGroup: 1,
-        };
+        // auth login api 호출
+        const res = await authService.signIn({ adminEmail: email.value, password: password.value });
 
         if (email.value === '1' && password.value === '1') {
             authStore.registerAdmin(res);

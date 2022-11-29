@@ -16,6 +16,7 @@
 
 <script setup lang="ts">
 const env = process.env.NODE_ENV;
+console.log(process.env);
 
 function onToggleSideMenu() {
     console.log('토글');

@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "serve": "vue-cli-service serve",
+        "serve": "vue-cli-service serve --port 6500",
         "build": "vue-cli-service build",
         "build:test": "vue-cli-service build --mode development",
         "build:stage": "vue-cli-service build --mode staging",
@@ -16,6 +16,7 @@
         "chart.js": "^3.9.1",
         "core-js": "^3.8.3",
         "dayjs": "^1.11.5",
+        "node-polyfill-webpack-plugin": "^2.0.1",
         "pinia": "^2.0.23",
         "pinia-plugin-persistedstate": "^2.3.0",
         "primeicons": "^6.0.1",
