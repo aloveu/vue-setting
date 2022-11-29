@@ -6,12 +6,15 @@
         </ul>
         <PageNavigation :pageOptions="pageOptions" :isListLoading="isListLoading" @listChange="onListChangeRequested($event)" />
     </div>
+
+    <Loading v-if="isListLoading" />
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import PageNavigation from '@/components/PageNavigation.vue';
 import { DTO } from '@/models';
+import PageNavigation from '@/components/PageNavigation.vue';
+import Loading from '@/components/Loading.vue';
 
 const isListLoading = ref(true);
 const pageOptions = ref({
@@ -37,11 +40,12 @@ async function getList(page: number) {
         // await ... list(page);
         setTimeout(() => {
             pageOptions.value.totalCount = 300;
+            isListLoading.value = false;
         }, 500);
     } catch (e) {
         console.log(e);
     } finally {
-        isListLoading.value = false;
+        // isListLoading.value = false;
     }
 }
 </script>
