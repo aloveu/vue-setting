@@ -9,10 +9,21 @@
         <h3>Date</h3>
         <p>UTC dayjs : {{ utc }}</p>
         <p>UTC filter : {{ $filters.dt(dayjs(), 'YYYY-MM-DD HH:mm:ss') }}</p>
+
+        <h3>User Permission</h3>
+        <p>내 현재 권한 : {{ Helper.Permission.getAdminType() }}</p>
+        <h4>접근가능한 권한 범위</h4>
+        <ul>
+            <li>Normal : {{ Helper.Permission.canAccess(DTO.Enums.AccountGroup.Normal) }}</li>
+            <li>Floorman : {{ Helper.Permission.canAccess(DTO.Enums.AccountGroup.Floorman) }}</li>
+            <li>Administrators : {{ Helper.Permission.canAccess(DTO.Enums.AccountGroup.Administrators) }}</li>
+            <li>Master : {{ Helper.Permission.canAccess(DTO.Enums.AccountGroup.Master) }}</li>
+        </ul>
     </div>
 </template>
 
 <script setup lang="ts">
+import { DTO } from '@/models';
 import { Helper } from '@/helper';
 import dayjs from 'dayjs';
 

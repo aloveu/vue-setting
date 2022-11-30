@@ -25,14 +25,14 @@ const DemoRoutes = [
         path: 'helper',
         component: () => import(/* webpackChunkName: "demo" */ '@/views/demo/Helper.vue'),
         meta: {
-            title: 'helper',
+            title: 'Helper',
         },
     },
     {
         path: 'calendar',
         component: () => import(/* webpackChunkName: "demo" */ '@/views/demo/Calendar.vue'),
         meta: {
-            title: 'calendar',
+            title: 'Calendar',
         },
     },
 ];

@@ -4,6 +4,8 @@ import brandRoute from '@/router/brand-route';
 import reportRoute from '@/router/report-route';
 import paymentRoute from '@/router/payment-route';
 import demoRoute from '@/router/demo-route';
+import { DTO } from '@/models';
+import { Helper } from '@/helper';
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -29,6 +31,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import(/* webpackChunkName: "auth" */ '@/views/LoginView.vue'),
         meta: {
             requireLogin: true,
+            permission: DTO.Enums.AccountGroup.Floorman,
             title: 'User',
             icon: 'pi pi-fw pi-users',
         },
@@ -38,6 +41,7 @@ const routes: Array<RouteRecordRaw> = [
         children: brandRoute,
         meta: {
             requireLogin: true,
+            permission: DTO.Enums.AccountGroup.Administrators,
             title: 'Brand',
             icon: 'pi pi-fw pi-bookmark',
         },
@@ -47,6 +51,7 @@ const routes: Array<RouteRecordRaw> = [
         children: paymentRoute,
         meta: {
             requireLogin: true,
+            permission: DTO.Enums.AccountGroup.Administrators,
             title: 'Payment',
         },
     },
@@ -55,6 +60,7 @@ const routes: Array<RouteRecordRaw> = [
         children: reportRoute,
         meta: {
             requireLogin: true,
+            permission: DTO.Enums.AccountGroup.Normal,
             title: 'Report',
             icon: 'pi pi-fw pi-align-center',
         },
@@ -70,6 +76,7 @@ const router = createRouter({
     routes,
 });
 
+// Navigation guard
 router.beforeEach(async (to, from, next) => {
     if (to.matched.some((record) => record.meta.requireLogin)) {
         const authStore = useAuthStore();
@@ -77,7 +84,17 @@ router.beforeEach(async (to, from, next) => {
         if (!authStore.isLogin) {
             next({ name: 'Login', query: { refUrl: to.fullPath } });
         } else {
-            next();
+            to.matched.some((record) => {
+                const menuPermission = record.meta.permission || DTO.Enums.AccountGroup.Normal;
+                const permission = Helper.Permission.canAccess(menuPermission as DTO.Enums.AccountGroup);
+
+                if (permission) {
+                    next();
+                } else {
+                    next('/PageNotFound');
+                }
+                return permission;
+            });
         }
     } else {
         next();

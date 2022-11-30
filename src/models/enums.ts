@@ -1,5 +1,6 @@
 export enum AccountGroup {
-    Guests,
+    Normal,
+    Floorman,
     Administrators,
     Master,
 }

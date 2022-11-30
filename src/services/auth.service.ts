@@ -1,5 +1,5 @@
 import { DTO } from '@/models';
-import http from './axios';
+import http from '@/services/axios';
 
 const authService = {
     signIn: (data: DTO.Auth.LoginRequest) => {

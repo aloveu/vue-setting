@@ -5,7 +5,11 @@ export const useAuthStore = defineStore('auth', {
     state: () => ({
         accessToken: '',
         isLogin: false,
-        userInfo: {},
+        userInfo: {
+            name: '',
+            email: '',
+            accountGroup: null,
+        },
     }),
     actions: {
         registerAdmin(userInfo: DTO.Auth.Info) {
