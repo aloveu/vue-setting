@@ -23,13 +23,15 @@ import utc from 'dayjs/plugin/utc';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import isBetween from 'dayjs/plugin/isBetween';
 import duration from 'dayjs/plugin/duration';
+import { Quasar } from 'quasar';
+import quasarUserOptions from './quasar-user-options';
 
 dayjs.extend(utc);
 dayjs.extend(isoWeek);
 dayjs.extend(isBetween);
 dayjs.extend(duration);
 
-const app = createApp(App);
+const app = createApp(App).use(Quasar, quasarUserOptions);
 const pinia = createPinia();
 pinia.use(createPersistedState());
 app.use(pinia);
