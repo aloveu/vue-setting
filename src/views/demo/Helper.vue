@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import { DTO } from '@/models';
-import { Helper } from '@/helper';
+import Helper from '@/helper';
 import dayjs from 'dayjs';
 
 const testNumber = [3.51, 3.59, 3.55];

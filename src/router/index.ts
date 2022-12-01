@@ -5,7 +5,7 @@ import reportRoute from '@/router/report-route';
 import paymentRoute from '@/router/payment-route';
 import demoRoute from '@/router/demo-route';
 import { DTO } from '@/models';
-import { Helper } from '@/helper';
+import Helper from '@/helper';
 
 const routes: Array<RouteRecordRaw> = [
     {

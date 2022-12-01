@@ -8,7 +8,7 @@
 import Menu from 'primevue/menu';
 import { routes } from '@/router';
 import { DTO } from '@/models';
-import { Helper } from '@/helper';
+import Helper from '@/helper';
 
 const menuData = routes.reduce((result, depth1) => {
     if (depth1.path !== '/login' && depth1.path !== '/:catchAll(.*)' && Helper.Permission.canAccess(depth1.meta.permission as DTO.Enums.AccountGroup)) {

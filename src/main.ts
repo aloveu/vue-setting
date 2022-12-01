@@ -5,7 +5,7 @@ import App from '@/App.vue';
 import '@/registerServiceWorker';
 import { router } from '@/router';
 import { focus, digitOnly } from '@/directives';
-import { Helper } from '@/helper';
+import Helper from '@/helper';
 import { createPersistedState } from 'pinia-plugin-persistedstate';
 
 // primeVue
