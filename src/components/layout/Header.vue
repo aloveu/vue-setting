@@ -5,21 +5,46 @@
             <em class="admin-title"> Admin {{ env }}</em>
         </h1>
 
-        <div class="header-admin" v-if="false">
-            <span class="admin-name"> <i class="pi pi-angle-down"></i></span>
-            <button type="button" class="button-menu" @click="onToggleSideMenu">
-                <i class="pi {{isSideMenuPanelToggle ? 'pi-times' : 'pi-bars'}}"></i>
+        <div class="header-admin" v-if="authStore.isLogin">
+            <button class="admin-name" @click="toggleUserMenu" aria-haspopup="true" aria-controls="overlay_menu">
+                {{ authStore.userInfo.name }}
+                <i class="pi pi-angle-down"></i>
             </button>
+            <Menu ref="menu" :model="userMenuItems" :popup="true" :style="{ top: '62px' }"></Menu>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-const env = process.env.NODE_ENV;
-console.log(process.env);
+import { ref } from 'vue';
+import Menu from 'primevue/menu';
+import { useAuthStore } from '@/store/auth';
+import { router } from '@/router';
 
-function onToggleSideMenu() {
-    console.log('토글');
+const env = process.env.NODE_ENV;
+const authStore = useAuthStore();
+const menu = ref();
+
+const userMenuItems = [
+    {
+        label: 'Logout',
+        icon: 'pi pi-sign-out',
+        command: async () => {
+            await authStore.signOut();
+            router.push('/');
+        },
+    },
+    {
+        label: 'Change Password',
+        icon: 'pi pi-unlock',
+        command: () => {
+            console.log('비번변경');
+        },
+    },
+];
+
+function toggleUserMenu(event) {
+    menu.value.toggle(event);
 }
 </script>
 
