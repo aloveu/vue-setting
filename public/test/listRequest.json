@@ -1,0 +1,113 @@
+{
+    "venueInfoList": [
+        {
+            "venueId": 15,
+            "venueName": "WSOP",
+            "venueImageUrl": "venue_15.png",
+            "linkUrl": "https://nate.com",
+            "venueAddress": null,
+            "utcTimeZoneNumber": 0,
+            "createdAt": "2022-10-19T11:49:32.8819824",
+            "updatedAt": "2022-10-24T07:36:39.9236886",
+            "tournamentCount": 0,
+            "stakeCount": 0
+        },
+        {
+            "venueId": 14,
+            "venueName": "Exclusive",
+            "venueImageUrl": "venue_14.jpg",
+            "linkUrl": "https://www.naver.com/",
+            "venueAddress": "",
+            "utcTimeZoneNumber": 0,
+            "createdAt": "2022-05-10T02:07:40.079193",
+            "updatedAt": "2022-05-10T02:07:40.079193",
+            "tournamentCount": 25,
+            "stakeCount": 4
+        },
+        {
+            "venueId": 13,
+            "venueName": "Poker",
+            "venueImageUrl": "venue_13.jpg",
+            "linkUrl": "https://en.ggpoker.com/",
+            "venueAddress": null,
+            "utcTimeZoneNumber": 0,
+            "createdAt": "2022-02-23T09:41:49.917799",
+            "updatedAt": "2022-05-13T03:51:47.5139218",
+            "tournamentCount": 1159,
+            "stakeCount": 1233
+        },
+        {
+            "venueId": 12,
+            "venueName": "Test",
+            "venueImageUrl": "venue_12.png",
+            "linkUrl": "www.naver.com",
+            "venueAddress": "대한민국 경기도 남양주시",
+            "utcTimeZoneNumber": 9,
+            "createdAt": "2022-01-21T05:42:33.8632957",
+            "updatedAt": "2022-03-04T03:07:43.7357065",
+            "tournamentCount": 49,
+            "stakeCount": 66
+        },
+        {
+            "venueId": 11,
+            "venueName": "s(Casino)*,.(){}[]&",
+            "venueImageUrl": "venue_11.png",
+            "linkUrl": "www.naver.com",
+            "venueAddress": "대한민국 서울특별시 성동구 성수동1가 685-700",
+            "utcTimeZoneNumber": 0,
+            "createdAt": "2022-01-13T09:03:24.0575091",
+            "updatedAt": "2022-01-17T02:29:37.7164866",
+            "tournamentCount": 0,
+            "stakeCount": 0
+        },
+        {
+            "venueId": 10,
+            "venueName": "DB Promy",
+            "venueImageUrl": "/venue_10.jpg",
+            "linkUrl": "https://www.naver.co",
+            "venueAddress": "대한민국 서울특별시 강남구 논현2동 언주로 609",
+            "utcTimeZoneNumber": 9,
+            "createdAt": "2021-11-17T10:18:40.2556404",
+            "updatedAt": "2022-08-26T08:38:53.6970438",
+            "tournamentCount": 11,
+            "stakeCount": 0
+        },
+        {
+            "venueId": 9,
+            "venueName": "venue11",
+            "venueImageUrl": "venue_9.jpg",
+            "linkUrl": "https://naver.com",
+            "venueAddress": "서울시 강남구1",
+            "utcTimeZoneNumber": 9,
+            "createdAt": "2021-11-17T08:36:21.3722466",
+            "updatedAt": "2022-04-18T08:00:28.5593047",
+            "tournamentCount": 9,
+            "stakeCount": 0
+        },
+        {
+            "venueId": 5,
+            "venueName": "11",
+            "venueImageUrl": "venue_5.png",
+            "linkUrl": "poker#.YeZl2P5BwuU",
+            "venueAddress": null,
+            "utcTimeZoneNumber": 0,
+            "createdAt": "2021-08-10T01:07:22.8225615",
+            "updatedAt": "2022-02-23T09:47:03.8845839",
+            "tournamentCount": 9,
+            "stakeCount": 0
+        },
+        {
+            "venueId": 4,
+            "venueName": "PocketFives",
+            "venueImageUrl": "venue_4.PNG",
+            "linkUrl": null,
+            "venueAddress": null,
+            "utcTimeZoneNumber": 0,
+            "createdAt": "2021-08-10T01:06:44.7115893",
+            "updatedAt": "2021-12-27T06:55:19.6301244",
+            "tournamentCount": 9,
+            "stakeCount": 3
+        }
+    ],
+    "totalCount": 13
+}

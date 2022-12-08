@@ -23,7 +23,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
             requireLogin: true,
             title: 'Demo',
-            icon: 'pi pi-fw pi-folder-open',
+            icon: 'lan',
         },
     },
     {
@@ -33,7 +33,7 @@ const routes: Array<RouteRecordRaw> = [
             requireLogin: true,
             permission: DTO.Enums.AccountGroup.Floorman,
             title: 'User',
-            icon: 'pi pi-fw pi-users',
+            icon: 'person',
         },
     },
     {
@@ -43,7 +43,7 @@ const routes: Array<RouteRecordRaw> = [
             requireLogin: true,
             permission: DTO.Enums.AccountGroup.Administrators,
             title: 'Brand',
-            icon: 'pi pi-fw pi-bookmark',
+            icon: 'bookmark',
         },
     },
     {
@@ -53,6 +53,7 @@ const routes: Array<RouteRecordRaw> = [
             requireLogin: true,
             permission: DTO.Enums.AccountGroup.Administrators,
             title: 'Payment',
+            icon: 'attach_money',
         },
     },
     {
@@ -62,7 +63,7 @@ const routes: Array<RouteRecordRaw> = [
             requireLogin: true,
             permission: DTO.Enums.AccountGroup.Normal,
             title: 'Report',
-            icon: 'pi pi-fw pi-align-center',
+            icon: 'dashboard',
         },
     },
     {

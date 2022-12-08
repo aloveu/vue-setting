@@ -5,9 +5,8 @@
             <li v-for="i in pageOptions.pageSize" :key="i">{{ i + (pageOptions.currentPage - 1) * pageOptions.pageSize }}</li>
         </ul>
         <PageNavigation :pageOptions="pageOptions" :isListLoading="isListLoading" @listChange="onListChangeRequested($event)" />
+        <Loading v-if="isListLoading" />
     </div>
-
-    <Loading v-if="isListLoading" />
 </template>
 
 <script setup lang="ts">

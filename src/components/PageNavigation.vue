@@ -1,12 +1,13 @@
 <template>
     <div class="page-navigation">
-        <Dropdown
-            v-model="pageSize"
-            :disabled="props.isListLoading"
+        <q-select
+            @update:model-value="onListCountChanged"
+            v-model="selectedPageCountText"
+            :loading="props.isListLoading"
             :options="pageCountList"
-            @change="onListCountChanged($event)"
-            optionLabel="label"
-            optionValue="value"
+            outlined
+            emit-value
+            map-options
             class="paging-select-dropdown"
         />
 
@@ -17,19 +18,17 @@
             </span>
 
             <span class="p-buttonset">
-                <Button @click="getList(1)" :disabled="props.isListLoading || 1 === props.pageOptions.currentPage" type="button" class="btn-paging" icon="pi pi-angle-double-left"></Button>
-                <Button
-                    :disabled="props.isListLoading || 1 === props.pageOptions.currentPage"
-                    @click="getList(props.pageOptions.currentPage - 1)"
-                    type="button"
-                    class="btn-paging"
-                    icon="pi pi-angle-left"
-                ></Button>
+                <button @click="getList(1)" :disabled="props.isListLoading || 1 === props.pageOptions.currentPage" type="button" class="btn-paging">
+                    <i class="material-icons">keyboard_double_arrow_left</i>
+                </button>
+                <button :disabled="props.isListLoading || 1 === props.pageOptions.currentPage" @click="getList(props.pageOptions.currentPage - 1)" type="button" class="btn-paging">
+                    <i class="material-icons">keyboard_arrow_left</i>
+                </button>
 
-                <em @click="showPageInputModal" class="btn-paging current-page">
+                <em class="btn-paging current-page">
                     {{ props.pageOptions.currentPage }}
 
-                    <OverlayPanel ref="op" my="center top" at="right center" appendTo="body">
+                    <q-menu v-model="isShowInputPanel" self="top middle">
                         <div class="page-input-overlay">
                             <input
                                 v-model="pageInput"
@@ -44,17 +43,17 @@
                             />
                             <button @click="handlerPaging($event)" type="button" class="btn-go">Go</button>
                         </div>
-                    </OverlayPanel>
+                    </q-menu>
                 </em>
-                <Button @click="getList(props.pageOptions.currentPage + 1)" :disabled="props.isListLoading || !hasMoreList" type="button" class="btn-paging" icon="pi pi-angle-right"></Button>
+                <button @click="getList(props.pageOptions.currentPage + 1)" :disabled="props.isListLoading || !hasMoreList" type="button" class="btn-paging">
+                    <i class="material-icons">keyboard_arrow_right</i>
+                </button>
             </span>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import Dropdown from 'primevue/dropdown';
-import OverlayPanel from 'primevue/overlaypanel';
 import { DTO } from '@/models';
 import { onUpdated, ref, defineProps, defineEmits, computed } from 'vue';
 
@@ -64,9 +63,11 @@ const props = defineProps<{
     isListLoading: boolean;
 }>();
 
+// input 페이징 패널 호출
+const isShowInputPanel = ref(false);
+
 // emit 정의
 const emit = defineEmits(['listChange']);
-
 const pageSize = ref(10);
 const hasMoreList = ref(false);
 const pageInput = ref(null);
@@ -76,6 +77,7 @@ const pageCountList = [
     { label: '50 Rows', value: 50 },
     { label: '100 Rows', value: 100 },
 ];
+const selectedPageCountText = ref(pageCountList[0].label);
 
 const getFirstRange = computed(() => {
     return props.pageOptions.currentPage * props.pageOptions.pageSize - props.pageOptions.pageSize + 1;
@@ -94,10 +96,10 @@ onUpdated(() => {
 });
 
 // 노출 length 변경때
-function onListCountChanged(e: any) {
+function onListCountChanged(size: any) {
     const pageOptions = {
         ...props.pageOptions,
-        pageSize: e.value,
+        pageSize: size,
         currentPage: 1,
     };
 
@@ -114,12 +116,6 @@ function getList(page: number) {
     emit('listChange', pageOptions);
 }
 
-// input 페이징 패널 호출
-const op = ref();
-function showPageInputModal(event) {
-    op.value.show(event);
-}
-
 // input에서 페이지 이동
 function handlerPaging($event) {
     $event.stopPropagation();
@@ -134,7 +130,7 @@ function handlerPaging($event) {
 
     getList(Number(pageInput.value));
     pageInput.value = null;
-    op.value.hide();
+    isShowInputPanel.value = false;
 }
 </script>
 
@@ -149,6 +145,14 @@ function handlerPaging($event) {
         margin-right: 10px;
         cursor: pointer;
         user-select: none;
+        :deep {
+            .q-field__native,
+            .q-field__control,
+            .q-field__marginal {
+                height: 35px;
+                min-height: 35px;
+            }
+        }
     }
     .paging-wrap {
         display: flex;
@@ -167,6 +171,7 @@ function handlerPaging($event) {
             display: flex;
             .btn-paging {
                 display: block;
+                min-width: 2.5rem;
                 color: #4e5056;
                 background-color: #fff;
                 border: 1px solid #ced4da;
@@ -175,15 +180,29 @@ function handlerPaging($event) {
                     position: relative;
                     width: 38px;
                     padding: 0.5rem;
+                    border-radius: 0;
                     text-align: center;
+                }
+                &:first-child {
+                    border-top-left-radius: 6px;
+                    border-bottom-left-radius: 6px;
+                }
+                &:last-child {
+                    border-top-right-radius: 6px;
+                    border-bottom-right-radius: 6px;
+                }
+                > .material-icons {
+                    font-size: 24px;
                 }
             }
         }
     }
 }
+
 .page-input-overlay {
     display: flex;
     flex-direction: column;
+    padding: 10px;
     border-radius: 3px;
     background-color: #fff;
 

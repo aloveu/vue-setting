@@ -1,8 +1,8 @@
 <template>
     <Header />
-    <article class="contents">
+    <article class="container">
         <template v-if="authStore.isLogin">
-            <Navbar />
+            <Navbar class="navbar" />
             <div class="content-container">
                 <BreadCrumb />
                 <router-view />
@@ -11,12 +11,9 @@
         </template>
         <router-view v-else />
     </article>
-
-    <Toast />
 </template>
 
 <script setup lang="ts">
-import Toast from 'primevue/toast';
 import Navbar from '@/components/layout/Navbar.vue';
 import Header from '@/components/layout/Header.vue';
 import Footer from '@/components/layout/Footer.vue';
@@ -27,8 +24,14 @@ const authStore = useAuthStore();
 </script>
 
 <style scoped lang="scss">
-.contents {
+.container {
+    display: flex;
+    min-height: 100vh;
     padding-top: 80px;
+    .navbar {
+        width: 200px;
+        background-color: #202124;
+    }
     .content-container {
         position: relative;
         float: right;

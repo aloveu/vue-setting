@@ -1,14 +1,19 @@
 <template>
-    <Breadcrumb :home="home" :model="breadcrumbItems" />
+    <q-breadcrumbs class="text-black" active-color="black">
+        <template v-slot:separator>
+            <q-icon size="1.2em" name="chevron_right" color="black" />
+        </template>
+
+        <q-breadcrumbs-el icon="home" to="/" />
+        <q-breadcrumbs-el v-for="(item, i) in breadcrumbItems" :key="i" :label="item.label" :to="item.to" />
+    </q-breadcrumbs>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
-import Breadcrumb from 'primevue/breadcrumb';
 
 const route = useRoute();
-const home = { icon: 'pi pi-home', to: '/' };
 const breadcrumbItems = computed(() => {
     const pathArray = route.path.split('/');
 

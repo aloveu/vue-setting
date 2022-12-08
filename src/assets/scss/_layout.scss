@@ -6,8 +6,36 @@ h2.title {
     background-color: #f6f8f9;
     border-radius: 10px 10px 0 0;
 }
-.content{
+.content {
+    position: relative;
     padding: 20px;
     border-radius: 0 0 10px 10px;
-    background-color: #fff
+    background-color: #fff;
+    a.link {
+        text-decoration: underline;
+        &:hover {
+            color: #bc0000;
+        }
+    }
+}
+
+.q-table {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-right-width: 0;
+    border-bottom-width: 0;
+    thead {
+        th {
+            border-right-width: 1px;
+            border-bottom-width: 1px;
+            color: #495057;
+            font-weight: 500;
+            background-color: #f8f9fa;
+        }
+    }
+    tbody {
+        td {
+            border-right-width: 1px;
+            border-bottom-width: 1px;
+        }
+    }
 }

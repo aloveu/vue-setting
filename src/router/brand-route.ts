@@ -5,7 +5,6 @@ const BrandRoutes = [
         component: () => import(/* webpackChunkName: "brandList" */ '@/views/brand/BrandList.vue'),
         meta: {
             title: 'Brand List',
-            icon: 'pi pi-fw pi-cog',
         },
     },
 ];

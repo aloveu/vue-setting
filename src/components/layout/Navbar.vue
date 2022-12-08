@@ -1,11 +1,28 @@
 <template>
-    <div class="navbar">
-        <Menu :model="menuData" />
-    </div>
+    <q-list bordered padding class="menu text-white">
+        <template v-for="(depth1, i) in menuData" :key="i">
+            <q-expansion-item v-if="depth1.items" :label="depth1.label" :icon="depth1.icon" :class="depth1.class" active-class="active" default-opened>
+                <q-item v-for="(depth2, j) in depth1.items" :key="j" :to="depth2.to" exact active-class="active" clickable v-ripple>
+                    <q-item-section v-if="depth2.icon" avatar>
+                        <q-icon :name="depth2.icon" />
+                    </q-item-section>
+
+                    <q-item-section>{{ depth2.label }}</q-item-section>
+                </q-item>
+            </q-expansion-item>
+
+            <q-item v-else :to="depth1.to" :class="depth1.class" active-class="active" clickable v-ripple>
+                <q-item-section v-if="depth1.icon" avatar>
+                    <q-icon :name="depth1.icon" />
+                </q-item-section>
+
+                <q-item-section>{{ depth1.label }}</q-item-section>
+            </q-item>
+        </template>
+    </q-list>
 </template>
 
 <script setup lang="ts">
-import Menu from 'primevue/menu';
 import { routes } from '@/router';
 import { DTO } from '@/models';
 import Helper from '@/helper';
@@ -41,20 +58,29 @@ const menuData = routes.reduce((result, depth1) => {
 </script>
 
 <style scoped lang="scss">
-.navbar :deep(.p-menu) {
+.menu {
     display: block;
-    position: fixed;
-    top: 80px;
-    bottom: 0;
-    left: 0;
     width: 200px;
-    z-index: 11;
 
     .menu_depth1 {
         font-weight: 700;
 
-        .p-menuitem-icon {
+        > i {
             display: none;
+        }
+        .q-item {
+            min-height: 30px;
+            text-indent: 40px;
+            font-weight: 400;
+            &.active {
+                font-weight: 700;
+                background-color: rgba(255, 255, 255, 0.2);
+            }
+        }
+    }
+    :deep {
+        .q-item__section--avatar {
+            min-width: 40px;
         }
     }
 }

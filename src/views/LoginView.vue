@@ -1,25 +1,28 @@
 <template>
     <div class="login">
-        <Card style="border-radius: 6px">
-            <template #title>Login</template>
-            <template #content>
-                <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon">
-                        <i class="pi pi-user"></i>
-                    </span>
-                    <InputText v-model="email" v-focus placeholder="Username" />
-                </div>
-                <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon">
-                        <i class="pi pi-lock"></i>
-                    </span>
-                    <Password v-model="password" @keydown.enter="handleLogin" :feedback="false" placeholder="Password" />
-                </div>
-            </template>
-            <template #footer>
-                <Button @click="handleLogin" icon="pi pi-sign-in" label="LOGIN"></Button>
-            </template>
-        </Card>
+        <q-card style="border-radius: 6px">
+            <q-card-section>
+                <div class="text-h5">Login</div>
+            </q-card-section>
+            <q-separator />
+
+            <q-card-section>
+                <q-input v-model="email" label="Username" v-focus outlined lazy-rules :rules="[isEmail]">
+                    <template v-slot:prepend>
+                        <q-icon name="person" />
+                    </template>
+                </q-input>
+
+                <q-input v-model="password" @keydown.enter="handleLogin" type="password" label="Password" outlined>
+                    <template v-slot:prepend>
+                        <q-icon name="lock" />
+                    </template>
+                </q-input>
+            </q-card-section>
+            <q-card-actions vertical>
+                <q-btn @click="handleLogin" color="primary" icon="login" label="LOGIN" />
+            </q-card-actions>
+        </q-card>
     </div>
 </template>
 
@@ -27,17 +30,15 @@
 // import
 import { onBeforeMount, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { useToast } from 'primevue/usetoast';
 import { useAuthStore } from '@/store/auth';
-import Password from 'primevue/password';
-import Card from 'primevue/card';
+import { useQuasar } from 'quasar';
 import authService from '@/services/auth.service';
 
 // util
 const router = useRouter();
 const route = useRoute();
-const toast = useToast();
 const authStore = useAuthStore();
+const $q = useQuasar();
 
 // data
 const email = ref('');
@@ -50,6 +51,12 @@ onBeforeMount(() => {
         router.replace(refUrl ? `${refUrl}` : '/report');
     }
 });
+
+// validator
+function isEmail(val) {
+    const emailPattern = /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
+    return (val.length > 0 && emailPattern.test(val)) || 'invalid email format.';
+}
 
 // data handle
 const handleLogin = async () => {
@@ -64,11 +71,22 @@ const handleLogin = async () => {
         }
     } catch (e) {
         console.log(e);
-        toast.add({
-            severity: 'error',
-            summary: 'Fail',
-            detail: 'Login Failed!',
-            life: 2000,
+        $q.notify({
+            color: 'negative',
+            message: 'Login Failed!',
+            icon: 'report_problem',
+            position: 'bottom-right',
+            timeout: 2000,
+            actions: [
+                {
+                    icon: 'close',
+                    color: 'white',
+                },
+            ],
+            // severity: 'error',
+            // summary: 'Fail',
+            // detail: 'Login Failed!',
+            // life: 2000,
         });
     }
 };

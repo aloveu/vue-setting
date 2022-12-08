@@ -3,14 +3,17 @@
         dash board
         <div class="card">
             <h5>Basic</h5>
-            <Chart type="line" :data="basicData" :options="basicOptions" />
+            <LineChart :chartData="basicData" :options="basicOptions" />
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import Chart from 'primevue/chart';
+import { LineChart } from 'vue-chart-3';
+import { Chart, registerables } from 'chart.js';
+
+Chart.register(...registerables);
 
 const basicData = ref({
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],

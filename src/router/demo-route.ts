@@ -35,6 +35,27 @@ const DemoRoutes = [
             title: 'Calendar',
         },
     },
+    {
+        path: 'file',
+        component: () => import(/* webpackChunkName: "demo" */ '@/views/demo/InputFile.vue'),
+        meta: {
+            title: 'Input File',
+        },
+    },
+    {
+        path: 'table',
+        component: () => import(/* webpackChunkName: "demo" */ '@/views/demo/Table.vue'),
+        meta: {
+            title: 'Table',
+        },
+    },
+    {
+        path: 'form-validator',
+        component: () => import(/* webpackChunkName: "demo" */ '@/views/demo/FormValidator.vue'),
+        meta: {
+            title: 'Form validator',
+        },
+    },
 ];
 
 export default DemoRoutes;

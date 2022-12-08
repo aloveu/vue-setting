@@ -5,7 +5,6 @@ const reportRoutes = [
         component: () => import(/* webpackChunkName: "report" */ '@/views/report/Dashboard.vue'),
         meta: {
             title: 'Dashboard',
-            icon: 'pi pi-fw pi-chart-line',
         },
     },
     {
@@ -13,7 +12,6 @@ const reportRoutes = [
         component: () => import(/* webpackChunkName: "report" */ '@/views/report/PaymentReport.vue'),
         meta: {
             title: 'Payment Report',
-            icon: 'pi pi-fw pi-dollar',
         },
     },
 ];
