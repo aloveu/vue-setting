@@ -6,13 +6,7 @@
                 <li>name : <q-input v-model="name" type="text" lazy-rules :rules="[(val) => !!val]" outlined /></li>
                 <li>
                     email :
-                    <q-input
-                        type="text"
-                        v-model="email"
-                        lazy-rules
-                        :rules="[(val) => !!val, (val) => /^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(val) || '이메일형식 맞춰야..']"
-                        outlined
-                    />
+                    <q-input type="text" v-model="email" lazy-rules outlined :rules="[(val) => !!val]" :error="!isEmailValidComputed" error-message="이메일 형식 맞춰야" />
                 </li>
                 <li>
                     phoneNumber :
@@ -28,33 +22,36 @@
                 </li>
             </ul>
 
-            <q-btn :disable="!isValid" label="Submit" type="submit" color="primary" />
+            <q-btn :disable="!isFormisValid" label="Submit" type="submit" color="primary" />
         </q-form>
     </div>
 </template>
 
 <script setup lang="ts">
-import { onUpdated, ref, Ref } from 'vue';
+import { onUpdated, ref, Ref, computed } from 'vue';
 
 const form = ref(null);
 const name: Ref<string> = ref(null);
 const email: Ref<string> = ref(null);
 const phoneNumber: Ref<number> = ref(null);
-const isValid = ref(false);
-
-function validation() {
-    console.log('호출됨');
-    form.value.validate().then((success) => {
-        isValid.value = success;
-    });
-}
 
 function handleSubmit() {
     console.log(`name: ${name.value}, email: ${email.value}, phone: ${phoneNumber.value}`);
 }
 
-onUpdated(() => {
-    validation();
+// test
+const isNameValidComputed = computed(() => {
+    return !!name.value;
+});
+const isEmailValidComputed = computed(() => {
+    return !email.value || /^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email.value);
+});
+const isPhoneNumberValidComputed = computed(() => {
+    return !!phoneNumber.value && phoneNumber?.value?.toString().length === 11;
+});
+
+const isFormisValid = computed(() => {
+    return isNameValidComputed.value && isEmailValidComputed.value && isPhoneNumberValidComputed.value;
 });
 </script>
 

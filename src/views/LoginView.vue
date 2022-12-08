@@ -20,7 +20,9 @@
                 </q-input>
             </q-card-section>
             <q-card-actions vertical>
-                <q-btn @click="handleLogin" color="primary" icon="login" label="LOGIN" />
+                <q-btn @click="handleLogin" :loading="isLoading" color="primary" icon="login" label="LOGIN">
+                    <template v-slot:loading> <q-spinner-facebook /> </template
+                ></q-btn>
             </q-card-actions>
         </q-card>
     </div>
@@ -41,6 +43,7 @@ const authStore = useAuthStore();
 const $q = useQuasar();
 
 // data
+const isLoading = ref(false);
 const email = ref('');
 const password = ref('');
 
@@ -61,6 +64,7 @@ function isEmail(val) {
 // data handle
 const handleLogin = async () => {
     try {
+        isLoading.value = true;
         // auth login api 호출
         const res = await authService.signIn({ adminEmail: email.value, password: password.value });
 
@@ -88,6 +92,8 @@ const handleLogin = async () => {
             // detail: 'Login Failed!',
             // life: 2000,
         });
+    } finally {
+        isLoading.value = false;
     }
 };
 </script>
