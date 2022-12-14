@@ -33,6 +33,7 @@ async function onListChangeRequested(options: DTO.Common.PageOptions) {
 }
 
 async function getList(page: number) {
+    console.log(page);
     try {
         isListLoading.value = true;
 
