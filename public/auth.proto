@@ -1,0 +1,8 @@
+// auth.proto
+package authpackage;
+syntax = "proto3";
+
+message LoginRequest {
+    string admin_email = 1;
+    string password = 2;
+}

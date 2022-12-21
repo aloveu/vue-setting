@@ -7,14 +7,14 @@ const http = axios.create({
     baseURL: process.env.VUE_APP_API_URL,
     withCredentials: true,
     headers: {
-        Accept: 'application/json',
+        Accept: 'application/grpc',
+        'Content-Type': 'application/grpc',
     },
+    responseType: 'arraybuffer',
 });
 
 http.interceptors.request.use(
     (request) => {
-        console.log('request interceptor', request);
-
         if (request.url.includes('//')) {
             request.baseURL = '';
         }

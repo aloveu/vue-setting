@@ -18,6 +18,8 @@
             </template>
             <template #footer>
                 <Button @click="handleLogin" icon="pi pi-sign-in" label="LOGIN"></Button>
+
+                <Button @click="protoBufTest" label="protoBuf test"></Button>
             </template>
         </Card>
     </div>
@@ -25,7 +27,7 @@
 
 <script setup lang="ts">
 // import
-import { onBeforeMount, ref } from 'vue';
+import { onBeforeMount, onMounted, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useToast } from 'primevue/usetoast';
 import { useAuthStore } from '@/store/auth';
@@ -50,6 +52,14 @@ onBeforeMount(() => {
         router.replace(refUrl ? `${refUrl}` : '/report');
     }
 });
+
+const protoBufTest = async () => {
+    try {
+        const res = await authService.protoSignIn({ adminEmail: email.value, password: password.value });
+    } catch (e) {
+        console.log(e);
+    }
+};
 
 // data handle
 const handleLogin = async () => {

@@ -1,0 +1,13 @@
+// awesome.proto
+syntax = "proto3";
+
+package awesomepackage;
+
+message AwesomeMessage {
+    string awesome_field = 1; // becomes awesomeField
+}
+
+message LoginRequest {
+    string admin_email = 1;
+    string password = 2;
+}
