@@ -22,8 +22,11 @@ import Header from '@/components/layout/Header.vue';
 import Footer from '@/components/layout/Footer.vue';
 import BreadCrumb from '@/components/layout/BreadCrumb.vue';
 import { useAuthStore } from '@/store/auth';
+import test from '@/services/grpc.service';
 
 const authStore = useAuthStore();
+
+test();
 </script>
 
 <style scoped lang="scss">

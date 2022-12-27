@@ -16,7 +16,10 @@
         "chart.js": "^3.9.1",
         "core-js": "^3.8.3",
         "dayjs": "^1.11.5",
+        "grpc-web": "^1.4.2",
+        "http2": "^3.3.7",
         "node-polyfill-webpack-plugin": "^2.0.1",
+        "path": "^0.12.7",
         "pinia": "^2.0.23",
         "pinia-plugin-persistedstate": "^2.3.0",
         "primeicons": "^6.0.1",
@@ -55,5 +58,10 @@
         "tabWidth": 4,
         "semi": true,
         "bracketSpacing": true
+    },
+    "browser": {
+        "fs": false,
+        "path": false,
+        "os": false
     }
 }
