@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+
+option csharp_namespace = "P7Stream.Stake";
+
+package stakeStream;
+
+service StakeNotification {
+  rpc StakeUpdate (StakeUpdateRequest) returns (StakeUpdateResponse);
+}
+
+message StakeUpdateRequest {
+  enum UpdateType {
+    Info = 0;
+    Status = 1;
+  }
+  enum StakeProgress {
+	Processing = 0;
+	Canceled = 1;
+  }
+  UpdateType updateType = 1;
+  int32 stakeId = 2;
+  int64 referenceId = 3;
+  float soldPercent = 4;
+  float offeredPercent = 5;
+  google.protobuf.FloatValue adjustStackMarkup = 6;
+  StakeProgress stakeProgress = 7;
+}
+
+// The response message containing the greetings.
+message StakeUpdateResponse {
+  string message = 1;
+}
