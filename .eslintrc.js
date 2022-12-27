@@ -56,5 +56,6 @@ module.exports = {
         'vuejs-accessibility/label-has-for': 'off',
         'vuejs-accessibility/form-control-has-label': 'off',
         'vuejs-accessibility/click-events-have-key-events': 'off',
+        '@typescript-eslint/no-explicit-any': 'off',
     },
 };

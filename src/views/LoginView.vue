@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
 // import
-import { onBeforeMount, onMounted, ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useToast } from 'primevue/usetoast';
 import { useAuthStore } from '@/store/auth';
@@ -56,6 +56,7 @@ onBeforeMount(() => {
 const protoBufTest = async () => {
     try {
         const res = await authService.protoSignIn({ adminEmail: email.value, password: password.value });
+        console.log(res);
     } catch (e) {
         console.log(e);
     }

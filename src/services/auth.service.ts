@@ -1,9 +1,10 @@
 import { DTO } from '@/models';
 import http from '@/services/axios';
-import { load } from 'protobufjs';
+import * as protobufjs from 'protobufjs';
 
 let authProto;
-load('auth.proto', (err, root) => {
+
+protobufjs.load('auth.proto', (err, root) => {
     if (err) throw err;
 
     authProto = root.lookupType('authpackage.LoginRequest');
@@ -11,6 +12,7 @@ load('auth.proto', (err, root) => {
 
 const authService = {
     signIn: (data: DTO.Auth.LoginRequest) => {
+        console.log(data);
         // return http.post('/Admin/LoginAdminRequest', data);
         // 비효율적인 response type정의지만.. 이렇게 써야함.  (axiosResponse Type)
         return http.get<any, DTO.Auth.Info>('/test/loginAdminRequest.json');
