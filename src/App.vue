@@ -22,11 +22,11 @@ import Header from '@/components/layout/Header.vue';
 import Footer from '@/components/layout/Footer.vue';
 import BreadCrumb from '@/components/layout/BreadCrumb.vue';
 import { useAuthStore } from '@/store/auth';
-import test from '@/services/test.js';
+import gprcP7Stream from '@/services/grpc_p7stream.service.js';
 
 const authStore = useAuthStore();
 
-test.stakeUpdate();
+gprcP7Stream.stakeUpdate();
 </script>
 
 <style scoped lang="scss">
