@@ -23,10 +23,20 @@ import Footer from '@/components/layout/Footer.vue';
 import BreadCrumb from '@/components/layout/BreadCrumb.vue';
 import { useAuthStore } from '@/store/auth';
 import gprcP7Stream from '@/services/grpc_p7stream.service.js';
+import { onBeforeMount } from 'vue';
 
 const authStore = useAuthStore();
 
-gprcP7Stream.stakeUpdate();
+// gprcP7Stream.stakeUpdate();
+
+onBeforeMount(async () => {
+    try {
+        const res = await gprcP7Stream.promiseStakeupdate();
+        console.log(res);
+    } catch (e) {
+        console.log(e);
+    }
+});
 </script>
 
 <style scoped lang="scss">
