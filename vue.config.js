@@ -1,9 +1,25 @@
-const { defineConfig } = require('@vue/cli-service');
-const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
-
-module.exports = defineConfig({
-    transpileDependencies: true,
-    configureWebpack: {
-        plugins: [new NodePolyfillPlugin()],
+module.exports = {
+    transpileDependencies: ['quasar'],
+    pluginOptions: {
+        quasar: {
+            importStrategy: 'kebab',
+            rtlSupport: false,
+        },
+        webpackBundleAnalyzer: {
+            openAnalyzer: false,
+        },
     },
-});
+    configureWebpack: (config) => {
+        config.output.filename = 'js/[name].[chunkhash].js';
+        config.output.chunkFilename = 'js/[name].[chunkhash].js';
+    },
+    css: {
+        loaderOptions: {
+            scss: {
+                additionalData: `
+                  @import "@/assets/scss/_variable.scss";
+                `,
+            },
+        },
+    },
+};

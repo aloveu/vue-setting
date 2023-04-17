@@ -7,7 +7,6 @@
 <style scoped lang="scss">
 .footer {
     display: block;
-    background-color: #e4e9ed;
     height: 50px;
     color: #aaa;
     text-align: center;

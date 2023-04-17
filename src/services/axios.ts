@@ -1,24 +1,21 @@
 import axios from 'axios';
-import { useAuthStore } from '@/store/auth';
+import { useAuthStore } from '@/store/auth.store';
+import { DTO } from '@/models';
 
-const authStore = useAuthStore();
+axios.defaults.withCredentials = true;
 
 const http = axios.create({
     baseURL: process.env.VUE_APP_API_URL,
-    withCredentials: true,
     headers: {
         Accept: 'application/json',
     },
 });
 
 http.interceptors.request.use(
-    (request) => {
-        console.log('request interceptor', request);
-
-        if (request.url.includes('//')) {
+    async (request) => {
+        if (request.url.includes('//') || request.url.includes('assets/js')) {
             request.baseURL = '';
         }
-        request.headers.Authrozation = authStore.accessToken;
         return request;
     },
     (error) => {
@@ -30,12 +27,27 @@ http.interceptors.response.use(
     (response) => {
         return response.data;
     },
-    (error) => {
-        console.log(error);
-        // 401은 여기서 처리 하면 될듯.
-        if (401 === error.response.status) {
-            console.log(401);
+    async (error) => {
+        const { config, response } = error;
+        const authStore = useAuthStore();
+
+        if (401 === response?.status) {
+            // try {
+            //     await authStore.refreshToken();
+            //
+            //     // 리프레시 후 토큰 재 요청
+            //     const reTry = await axios(config);
+            //     return reTry.data;
+            // } catch (e) {
+            //     console.error(e);
+            // }
         }
+
+        const signOutErrors = [DTO.Enums.ErrorCodes.EXPIRED_TOKEN, DTO.Enums.ErrorCodes.INVALID_TOKEN];
+        if (signOutErrors.includes(response.data?.errorCode)) {
+            authStore.signOut();
+        }
+
         return Promise.reject(error.response.data);
     }
 );

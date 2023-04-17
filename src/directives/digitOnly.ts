@@ -3,11 +3,14 @@
  * int는 그냥 v-digit-only 적용
  * 첫번째 숫자0 허용은 v-digit-only.allowFirstZero
  * 소수점허용은 v-digit-only.decimal
+ * 소수점 자리수 적용은 v-digit-only.decimal="2"
  */
 
 let isDecimal = false;
 let isAllowFirstZero = true;
 let decimalCounter = 0;
+let decimalScale = 0;
+
 const decimalSeparator = '.';
 const navigationKeys = ['Backspace', 'Delete', 'Tab', 'Escape', 'Enter', 'Home', 'End', 'ArrowLeft', 'ArrowRight', 'Clear', 'Copy', 'Paste'];
 
@@ -16,16 +19,6 @@ export default {
         el.addEventListener('keydown', (event: KeyboardEvent) => {
             isDecimal = binding.modifiers.decimal;
             isAllowFirstZero = binding.modifiers.allowFirstZero;
-            if (isDecimal) {
-                const inputValue = el.value;
-                const decimalInfo = inputValue.split(decimalSeparator);
-
-                decimalCounter = decimalInfo.length - 1;
-
-                if (inputValue.indexOf('.') > -1 && event.key === decimalSeparator) {
-                    event.preventDefault();
-                }
-            }
 
             if (
                 navigationKeys.indexOf(event.key) > -1 ||
@@ -40,6 +33,18 @@ export default {
                 (isDecimal && event.key === decimalSeparator && decimalCounter < 1)
             ) {
                 return;
+            }
+
+            if (isDecimal) {
+                const inputValue = el.querySelector('input').value;
+                decimalScale = binding.value;
+                const decimalInfo = inputValue.split(decimalSeparator);
+
+                decimalCounter = decimalInfo.length - 1;
+
+                if (inputValue.indexOf('.') > -1 && !!decimalInfo[1] && decimalInfo[1].length >= decimalScale) {
+                    event.preventDefault();
+                }
             }
 
             // Ensure that it is a number and stop the keypress

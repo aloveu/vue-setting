@@ -3,24 +3,26 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "serve": "vue-cli-service serve --port 6500",
+        "serve": "vue-cli-service serve --mode local --port 6611",
         "build": "vue-cli-service build",
-        "build:test": "vue-cli-service build --mode development",
-        "build:stage": "vue-cli-service build --mode staging",
-        "build:prod": "vue-cli-service build --mode production",
-        "lint": "vue-cli-service lint"
+        "lint": "vue-cli-service lint",
+        "build:prod": "vue-cli-service build --mode prod",
+        "build:stage": "vue-cli-service build --mode stage",
+        "build:test": "vue-cli-service build --mode test",
+        "storybook": "start-storybook -p 6006",
+        "build-storybook": "build-storybook",
+        "testpwa": "npm run build && npx http-server ./dist"
     },
     "dependencies": {
-        "@popperjs/core": "^2.11.6",
+        "@quasar/extras": "^1.0.0",
+        "@vuepic/vue-datepicker": "^3.6.8",
         "axios": "^1.1.3",
         "chart.js": "^3.9.1",
         "core-js": "^3.8.3",
         "dayjs": "^1.11.5",
-        "node-polyfill-webpack-plugin": "^2.0.1",
         "pinia": "^2.0.23",
         "pinia-plugin-persistedstate": "^2.3.0",
-        "primeicons": "^6.0.1",
-        "primevue": "^3.18.1",
+        "quasar": "^2.0.0",
         "register-service-worker": "^1.7.2",
         "typescript": "^4.8.4",
         "vue": "^3.2.13",
@@ -45,8 +47,10 @@
         "eslint-plugin-vue": "^8.0.3",
         "eslint-plugin-vuejs-accessibility": "^1.1.0",
         "prettier": "^2.4.1",
-        "sass": "^1.32.7",
-        "sass-loader": "^12.0.0"
+        "sass": "1.32.12",
+        "sass-loader": "^12.0.0",
+        "vue-cli-plugin-quasar": "~5.0.1",
+        "vue-cli-plugin-webpack-bundle-analyzer": "^4.0.0"
     },
     "prettier": {
         "printWidth": 200,

@@ -1,51 +1,53 @@
-import '@/assets/scss/styles.scss';
-import { createApp } from 'vue';
+import { createApp, markRaw } from 'vue';
 import { createPinia } from 'pinia';
 import App from '@/App.vue';
-import '@/registerServiceWorker';
 import { router } from '@/router';
-import { focus, digitOnly } from '@/directives';
-import Helper from '@/helper';
+import { focus, digitOnly, textOnly } from '@/directives';
+import { Filters } from '@/helper';
 import { createPersistedState } from 'pinia-plugin-persistedstate';
 
-// primeVue
-import PrimeVue from 'primevue/config';
-import 'primevue/resources/themes/saga-blue/theme.css';
-import 'primevue/resources/primevue.min.css';
-import 'primeicons/primeicons.css';
-import ToastService from 'primevue/toastservice';
-import InputText from 'primevue/inputtext';
-import Button from 'primevue/button';
+// quasar
+import { Quasar } from 'quasar';
+import quasarUserOptions from '@/quasar-user-options';
+
+// datepicker
+import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
+
+// 스타일을 다른 라이브러리 아래쪽에
+import '@/assets/scss/styles.scss';
 
 // dayjs
 import * as dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import isBetween from 'dayjs/plugin/isBetween';
 import duration from 'dayjs/plugin/duration';
 
 dayjs.extend(utc);
+dayjs.extend(timezone);
 dayjs.extend(isoWeek);
 dayjs.extend(isBetween);
 dayjs.extend(duration);
 
-const app = createApp(App);
 const pinia = createPinia();
 pinia.use(createPersistedState());
+pinia.use(({ store }) => {
+    store.router = markRaw(router);
+});
+
+const app = createApp(App).use(Quasar, quasarUserOptions);
 app.use(pinia);
 app.use(router);
-app.use(PrimeVue);
-app.use(ToastService);
 
+app.component('Datepicker', Datepicker);
 app.mount('#app');
-
-// component 전역 등록
-app.component('InputText', InputText);
-app.component('Button', Button);
 
 // directive 등록
 app.directive('focus', focus);
 app.directive('digitOnly', digitOnly);
+app.directive('textOnly', textOnly);
 
 // filter 등록
-app.config.globalProperties.$filters = Helper.filters;
+app.config.globalProperties.$filters = Filters;

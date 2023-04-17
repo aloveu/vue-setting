@@ -1,38 +1,12 @@
-const DemoRoutes = [
-    {
-        path: 'filter',
-        alias: '',
-        component: () => import(/* webpackChunkName: "demo" */ '@/views/demo/Filter.vue'),
-        meta: {
-            title: 'Filter',
-        },
-    },
-    {
-        path: 'directives',
-        component: () => import(/* webpackChunkName: "demo" */ '@/views/demo/Directives.vue'),
-        meta: {
-            title: 'Directives',
-        },
-    },
+import { RouteRecordRaw } from 'vue-router';
+
+const DemoRoutes: Array<RouteRecordRaw> = [
     {
         path: 'page-navigation',
-        component: () => import(/* webpackChunkName: "demo" */ '@/views/demo/PageNavigationDemo.vue'),
+        component: () => import(/* webpackChunkName: "demo" */ '@/pages/demo/PageNavigationDemo.vue'),
         meta: {
             title: 'Page Navigation',
-        },
-    },
-    {
-        path: 'helper',
-        component: () => import(/* webpackChunkName: "demo" */ '@/views/demo/Helper.vue'),
-        meta: {
-            title: 'Helper',
-        },
-    },
-    {
-        path: 'calendar',
-        component: () => import(/* webpackChunkName: "demo" */ '@/views/demo/Calendar.vue'),
-        meta: {
-            title: 'Calendar',
+            icon: 'sym_o_account_tree',
         },
     },
 ];

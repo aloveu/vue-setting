@@ -1,12 +1,13 @@
 <template>
     <div class="page-navigation">
-        <Dropdown
-            v-model="pageSize"
-            :disabled="props.isListLoading"
+        <q-select
+            @update:model-value="onListCountChanged"
+            :modelValue="props.pageOptions.pageSize"
+            :loading="props.isListLoading"
             :options="pageCountList"
-            @change="onListCountChanged($event)"
-            optionLabel="label"
-            optionValue="value"
+            outlined
+            emit-value
+            map-options
             class="paging-select-dropdown"
         />
 
@@ -17,19 +18,17 @@
             </span>
 
             <span class="p-buttonset">
-                <Button @click="getList(1)" :disabled="props.isListLoading || 1 === props.pageOptions.currentPage" type="button" class="btn-paging" icon="pi pi-angle-double-left"></Button>
-                <Button
-                    :disabled="props.isListLoading || 1 === props.pageOptions.currentPage"
-                    @click="getList(props.pageOptions.currentPage - 1)"
-                    type="button"
-                    class="btn-paging"
-                    icon="pi pi-angle-left"
-                ></Button>
+                <button @click="getList(1)" :disabled="props.isListLoading || 1 === props.pageOptions.currentPage" type="button" class="btn-paging">
+                    <q-icon name="keyboard_double_arrow_left" />
+                </button>
+                <button :disabled="props.isListLoading || 1 === props.pageOptions.currentPage" @click="getList(props.pageOptions.currentPage - 1)" type="button" class="btn-paging">
+                    <q-icon name="keyboard_arrow_left" />
+                </button>
 
-                <em @click="showPageInputModal" class="btn-paging current-page">
+                <em class="btn-paging current-page">
                     {{ props.pageOptions.currentPage }}
 
-                    <OverlayPanel ref="op" my="center top" at="right center" appendTo="body">
+                    <q-menu v-model="isShowInputPanel" self="top middle">
                         <div class="page-input-overlay">
                             <input
                                 v-model="pageInput"
@@ -44,17 +43,17 @@
                             />
                             <button @click="handlerPaging($event)" type="button" class="btn-go">Go</button>
                         </div>
-                    </OverlayPanel>
+                    </q-menu>
                 </em>
-                <Button @click="getList(props.pageOptions.currentPage + 1)" :disabled="props.isListLoading || !hasMoreList" type="button" class="btn-paging" icon="pi pi-angle-right"></Button>
+                <button @click="getList(props.pageOptions.currentPage + 1)" :disabled="props.isListLoading || !hasMoreList" type="button" class="btn-paging">
+                    <q-icon name="keyboard_arrow_right" size="24px" />
+                </button>
             </span>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import Dropdown from 'primevue/dropdown';
-import OverlayPanel from 'primevue/overlaypanel';
 import { DTO } from '@/models';
 import { onUpdated, ref, defineProps, defineEmits, computed } from 'vue';
 
@@ -64,24 +63,26 @@ const props = defineProps<{
     isListLoading: boolean;
 }>();
 
+// input 페이징 패널 호출
+const isShowInputPanel = ref<boolean>(false);
+
 // emit 정의
 const emit = defineEmits(['listChange']);
-
-const pageSize = ref(10);
-const hasMoreList = ref(false);
-const pageInput = ref(null);
-const pageCountList = [
+const pageSize = ref<number>(10);
+const hasMoreList = ref<boolean>(false);
+const pageInput = ref<number>(null);
+const pageCountList: DTO.Common.DropDownListItem[] = [
     { label: '10 Rows', value: 10 },
     { label: '30 Rows', value: 30 },
     { label: '50 Rows', value: 50 },
     { label: '100 Rows', value: 100 },
 ];
 
-const getFirstRange = computed(() => {
+const getFirstRange = computed((): number => {
     return props.pageOptions.currentPage * props.pageOptions.pageSize - props.pageOptions.pageSize + 1;
 });
 
-const getLastRange = computed(() => {
+const getLastRange = computed((): number => {
     if (props.pageOptions.currentPage * props.pageOptions.pageSize > props.pageOptions.totalCount) {
         return props.pageOptions.totalCount;
     }
@@ -94,14 +95,12 @@ onUpdated(() => {
 });
 
 // 노출 length 변경때
-function onListCountChanged(e: any) {
+function onListCountChanged(size) {
     const pageOptions = {
         ...props.pageOptions,
-        pageSize: e.value,
+        pageSize: size,
         currentPage: 1,
-    };
-
-    getList(props.pageOptions.currentPage);
+    } as DTO.Common.PageOptions;
     emit('listChange', pageOptions);
 }
 
@@ -110,14 +109,8 @@ function getList(page: number) {
     const pageOptions = {
         ...props.pageOptions,
         currentPage: page,
-    };
+    } as DTO.Common.PageOptions;
     emit('listChange', pageOptions);
-}
-
-// input 페이징 패널 호출
-const op = ref();
-function showPageInputModal(event) {
-    op.value.show(event);
 }
 
 // input에서 페이지 이동
@@ -134,7 +127,7 @@ function handlerPaging($event) {
 
     getList(Number(pageInput.value));
     pageInput.value = null;
-    op.value.hide();
+    isShowInputPanel.value = false;
 }
 </script>
 
@@ -146,9 +139,18 @@ function handlerPaging($event) {
     .paging-select-dropdown {
         position: relative;
         display: inline-flex;
+        min-width: 183px;
         margin-right: 10px;
         cursor: pointer;
         user-select: none;
+        :deep {
+            .q-field__native,
+            .q-field__control,
+            .q-field__marginal {
+                height: 40px;
+                min-height: 40px;
+            }
+        }
     }
     .paging-wrap {
         display: flex;
@@ -167,23 +169,38 @@ function handlerPaging($event) {
             display: flex;
             .btn-paging {
                 display: block;
+                min-width: 2.5rem;
                 color: #4e5056;
                 background-color: #fff;
                 border: 1px solid #ced4da;
                 margin-left: -1px;
                 &.current-page {
                     position: relative;
-                    width: 38px;
+                    width: 40px;
                     padding: 0.5rem;
+                    border-radius: 0;
                     text-align: center;
+                }
+                &:first-child {
+                    border-top-left-radius: 3px;
+                    border-bottom-left-radius: 3px;
+                }
+                &:last-child {
+                    border-top-right-radius: 3px;
+                    border-bottom-right-radius: 3px;
+                }
+                > .material-icons {
+                    font-size: 24px;
                 }
             }
         }
     }
 }
+
 .page-input-overlay {
     display: flex;
     flex-direction: column;
+    padding: 10px;
     border-radius: 3px;
     background-color: #fff;
 
@@ -206,9 +223,9 @@ function handlerPaging($event) {
         width: 122px;
         height: 33px;
         border: 0;
-        border-radius: 5px;
+        border-radius: 3px;
         color: #fff;
-        background-color: #a11111;
+        background-color: $primary;
     }
 }
 </style>

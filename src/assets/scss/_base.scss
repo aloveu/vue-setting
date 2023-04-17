@@ -4,7 +4,7 @@ body {
 }
 
 body {
-    background-color: #e4e9ed;
+    background-color: #e9e9e9;
     color: #333;
     font-size: 14px;
 }
@@ -14,13 +14,13 @@ body {
     padding: 0;
     box-sizing: border-box;
     outline: none;
-    font-family: 'RobotoRegular', sans-serif;
+    font-family: 'Roboto', sans-serif;
     word-wrap: break-word;
-    color: inherit;
 }
 
 a {
     text-decoration: none;
+    color: inherit;
 }
 
 th {
@@ -66,6 +66,12 @@ pre {
 }
 fieldset {
     border: 0 none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    //-webkit-appearance: none;
+    margin: 0;
 }
 
 .hidden {

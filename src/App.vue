@@ -1,40 +1,77 @@
 <template>
     <Header />
-    <article class="contents">
-        <template v-if="authStore.isLogin">
-            <Navbar />
+    <article class="container">
+        <template v-if="hasContentsLayout">
+            <Navbar class="navbar" />
             <div class="content-container">
                 <BreadCrumb />
-                <router-view />
-                <Footer />
+                <div class="box">
+                    <Title />
+                    <router-view />
+                </div>
+                <Footer />>
             </div>
         </template>
         <router-view v-else />
     </article>
-
-    <Toast />
 </template>
 
 <script setup lang="ts">
-import Toast from 'primevue/toast';
+import { watch, computed, onMounted } from 'vue';
+import { useAuthStore } from '@/store/auth.store';
+import { useRoute } from 'vue-router';
+
 import Navbar from '@/components/layout/Navbar.vue';
 import Header from '@/components/layout/Header.vue';
 import Footer from '@/components/layout/Footer.vue';
+import Title from '@/components/layout/Title.vue';
 import BreadCrumb from '@/components/layout/BreadCrumb.vue';
-import { useAuthStore } from '@/store/auth';
 
+const route = useRoute();
 const authStore = useAuthStore();
+const hasContentsLayout = computed(() => {
+    return authStore.isLogin && route.meta.hasContentsLayout;
+});
+
+onMounted(async () => {
+    if (authStore.isLogin) {
+        await initAfterLogin();
+    }
+});
+
+// 로그인 subscribe
+watch(
+    () => authStore.isLogin,
+    async (n) => {
+        if (n) {
+            await initAfterLogin();
+        }
+    }
+);
+
+async function initAfterLogin() {
+    //
+}
 </script>
 
 <style scoped lang="scss">
-.contents {
-    padding-top: 80px;
+.container {
+    display: flex;
+    min-height: 100vh;
+    padding-top: $header-height;
+    .navbar {
+        flex: 250px 0 0;
+        background-color: #000;
+    }
     .content-container {
         position: relative;
-        float: right;
-        width: calc(100% - 200px);
+        flex: 1;
         height: 100%;
-        padding: 30px;
+        padding: 25px 20px;
+        .box {
+            border-radius: 10px;
+            box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.25);
+        }
     }
 }
 </style>
