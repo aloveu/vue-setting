@@ -3,8 +3,18 @@
         <div>전체목록 | 총회원수 20,570명 중 차단 12명 탈퇴 50명</div>
 
         <section class="filter-section">
-            <q-select v-model="searchModel.searchBy" :options="searchByOptions" map-options outlined dense />
-            <q-input v-model="searchModel.searchText" label="회원아이디" @keydown.enter="getMemberList" outlined dense />
+            <q-select v-model="searchModel.searchType" :options="searchByOptions" map-options emit-value outlined dense />
+            <q-select v-if="MemberSearchType.Sex === searchModel.searchType" v-model="searchModel.searchKeyword" :options="sexOptions" map-options emit-value outlined dense />
+            <q-select
+                v-else-if="MemberSearchType.MemberTendency === searchModel.searchType"
+                v-model="searchModel.searchKeyword"
+                :options="MemberTendencyOptions"
+                map-options
+                emit-value
+                outlined
+                dense
+            />
+            <q-input v-else v-model="searchModel.searchKeyword" label="검색어" @keydown.enter="getMemberList" outlined dense />
             <q-btn @click="getMemberList" label="검색" color="primary" icon="search" unelevated />
         </section>
         <Table>
@@ -31,11 +41,11 @@
                             {{ member.memberName }}
                             <q-menu>
                                 <q-list style="min-width: 100px">
-                                    <q-item :to="`members/${member.memberId}/articles`" clickable>
+                                    <q-item :to="`members/${member.memberSeq}/articles`" clickable>
                                         <q-item-section>작성글보기</q-item-section>
                                     </q-item>
                                     <q-separator />
-                                    <q-item :to="`members/${member.memberId}/photo-list`" clickable>
+                                    <q-item :to="`members/${member.memberSeq}/photo-list`" clickable>
                                         <q-item-section>올린사진보기</q-item-section>
                                     </q-item>
                                 </q-list>
@@ -44,9 +54,9 @@
                     </td>
                     <td>{{ member.memberPhone }}</td>
                     <td>{{ member.memberEmail }}</td>
-                    <td>{{ member.memberAddr }}</td>
+                    <td>{{ member.address }} {{ member.address2 }} {{ member.address3 }}</td>
                 </tr>
-                <tr v-if="!memberList.length">
+                <tr v-if="!memberList.length & !isLoading" class="text-center">
                     <td colspan="100%">No Data</td>
                 </tr>
             </template>
@@ -63,25 +73,33 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, watch } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import memberService from '@/services/member.service';
 import Table from '@/components/layout/Table.vue';
 import Loading from '@/components/Loading.vue';
 import { ConfirmMessage, ToastMessage } from '@/helper';
+import { MemberSearchType } from '@/models/enums';
 
 const isLoading = ref<boolean>(false);
 const searchModel = ref({
-    searchBy: 1,
-    searchText: '',
+    searchType: '',
+    searchKeyword: '',
 });
 const searchByOptions = reactive([
-    { label: '이름', value: '' },
-    { label: '성별', value: '' },
-    { label: '성향', value: '' },
-    { label: 'E-Mail', value: '' },
-    { label: '휴대폰번호', value: '' },
-    { label: '가입일시', value: '' },
+    { label: '전체', value: '' },
+    { label: '이름', value: MemberSearchType.MemberName },
+    { label: '성별', value: MemberSearchType.Sex },
+    { label: '성향', value: MemberSearchType.MemberTendency },
+    { label: 'E-Mail', value: MemberSearchType.MemberEmail },
+    { label: '휴대폰번호', value: MemberSearchType.MemberPhone },
+    { label: '가입일시', value: MemberSearchType.MemberRegisterdAt },
 ]);
+const sexOptions = [
+    { label: '전체', value: '' },
+    { label: '남', value: '남' },
+    { label: '여', value: '여' },
+];
+const MemberTendencyOptions = reactive([]);
 const memberList = ref([]);
 const allSelect = ref<boolean>(false);
 const selectedMemberList = computed(() => {
@@ -91,26 +109,34 @@ const isModifyModal = ref<boolean>(false);
 
 onMounted(() => {
     getMemberList();
+    getMemberTendencyOptions();
 });
 
 async function getMemberList() {
     try {
         isLoading.value = true;
 
-        // const res = await memberService.getMembers({});
-
-        memberList.value = [
-            {
-                memberId: 'asdfas',
-                memberName: '정상천',
-                memberPhone: '010-1111-2222',
-                memberEmail: 'asdf@sdfas.com',
-                memberAddr: '서울특별시,.....',
-                isSelected: false,
-            },
-        ];
+        const res = await memberService.getMembers(searchModel.value);
+        console.log(res);
+        memberList.value = res.map((x) => {
+            x.isSelected = false;
+            return x;
+        });
     } catch (e) {
-        console.log(e);
+        ToastMessage.error(e);
+    } finally {
+        isLoading.value = false;
+    }
+}
+
+// 성향 리스트
+async function getMemberTendencyOptions() {
+    try {
+        isLoading.value = true;
+
+        // const res = await memberService.getMembers(searchModel.value);
+    } catch (e) {
+        ToastMessage.error(e);
     } finally {
         isLoading.value = false;
     }

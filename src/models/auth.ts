@@ -4,9 +4,14 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
-    adminPhone: string;
-    memberStatus: string;
+    adminSeq: number;
 }
-export interface SmsRequest {
-    authValue: string;
+
+export interface GetLoginAuthNumberRequest {
+    adminSeq: number;
+}
+
+export interface CertifyLoginAuthNumberRequest {
+    adminSeq: number;
+    authNumber: string;
 }

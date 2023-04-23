@@ -30,14 +30,13 @@
         </q-card>
     </div>
 
-    <TwoFactorModal v-if="isShowPlayerInfo" v-model:isShowPlayerInfo="isShowPlayerInfo" />
+    <TwoFactorModal v-if="isShowPlayerInfo" v-model:isShowPlayerInfo="isShowPlayerInfo" :adminSeq="adminSeq" />
 </template>
 
 <script setup lang="ts">
 // import
 import { computed, nextTick, onBeforeMount, reactive, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { useAuthStore } from '@/store/auth.store';
 import { ToastMessage, Validator } from '@/helper';
 import { required } from '@vuelidate/validators';
 import useVuelidate from '@vuelidate/core';
@@ -47,7 +46,6 @@ import TwoFactorModal from '@/pages/auth/TwoFactorModal.vue';
 // util
 const router = useRouter();
 const route = useRoute();
-const authStore = useAuthStore();
 
 // data
 const isLoading = ref<boolean>(false);
@@ -61,21 +59,16 @@ const loginRules = computed(() => ({
 }));
 const vuelidate = useVuelidate(loginRules, loginForm);
 const isShowPlayerInfo = ref<boolean>(false);
+const adminSeq = ref<number>(null);
 
 // data handle
 async function requestSignIn() {
     try {
         isLoading.value = true;
 
-        const loginResponse = await authService.signIn(loginForm);
-        authStore.tempAdminRegister(loginResponse);
-        // TODO : 임시
-        authStore.isLogin = true;
-        nextTick(() => {
-            router.push('/management/members/list');
-        });
-
-        // isShowPlayerInfo.value = true;
+        const res = await authService.signIn(loginForm);
+        adminSeq.value = res.adminSeq;
+        isShowPlayerInfo.value = true;
     } catch (e) {
         console.error(e);
         ToastMessage.error('Login Failed!');

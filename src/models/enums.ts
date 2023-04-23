@@ -13,3 +13,12 @@ export enum ErrorCodes {
 export enum ResultCode {
     SUCCESS = '200',
 }
+
+export enum MemberSearchType {
+    MemberName = 'memberName',
+    Sex = 'sex',
+    MemberTendency = 'memberTendency',
+    MemberEmail = 'memberEmail',
+    MemberPhone = 'memberPhone',
+    MemberRegisterdAt = 'memberRegisterdAt',
+}

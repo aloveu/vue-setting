@@ -37,7 +37,7 @@ const tempVerifyCode = ref<string>('');
 // SMS 보내기
 async function sendVerificationCode() {
     try {
-        const res = await authService.smsAuth({ authValue: authStore.userInfo.adminPhone });
+        const res = await authService.getLoginAuthNumber({ authValue: authStore.userInfo.adminPhone });
         console.log(res);
         tempVerifyCode.value = '111111';
         isVerifyCodeSended.value = true;

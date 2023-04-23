@@ -27,7 +27,7 @@ http.interceptors.request.use(
 http.interceptors.response.use(
     (response) => {
         if (response.data.resultCode !== ResultCode.SUCCESS) {
-            throw Error(response.data?.resultMessage);
+            return Promise.reject(response.data?.resultMessage);
         }
         return response.data.data;
     },

@@ -1,32 +1,17 @@
 export interface GetMemberListRequest {
-    memberId: string;
-    location: string;
-    fromAge: 0;
-    toAge: 0;
-    distance: 0;
+    searchType: string;
+    searchKeyword: string;
 }
 export interface Member {
     isSelected: boolean;
+    memberSeq: number;
     memberId: string;
     memberName: string;
     memberPhone: string;
-    memberBirthday: string;
-    memberIntro: string;
-    memberHeight: string;
-    language: string;
-    bodyInfo: string;
-    drinkInfo: string;
-    smokingInfo: string;
-    memberTendencyCd: string;
-    searchTendencyCd1: string;
-    searchTendencyCd2: string;
-    searchTendencyCd3: string;
-    tbMemberPhotoInfoList: [
-        {
-            photoSeq: 0;
-            photoSavedFileName: string;
-        }
-    ];
+    memberEmail: string;
+    address: string;
+    address2: string;
+    address3: string;
 }
 export interface UpdateMemberRequest {
     memberId: string;

@@ -12,8 +12,8 @@
             </q-card-section>
 
             <q-card-actions align="right">
-                <q-btn v-if="isVerifyCodeSended" @click="confirmVerificationCode" label="인증 완료" color="primary" />
-                <q-btn v-else @click="sendVerificationCode" label="인증 번호 발송" color="primary" />
+                <q-btn v-if="isVerifyCodeSended" :loading="isLoading" @click="confirmVerificationCode" label="인증 완료" color="primary" />
+                <q-btn v-else :loading="isLoading" @click="sendVerificationCode" label="인증 번호 발송" color="primary" />
             </q-card-actions>
         </q-card>
     </q-dialog>
@@ -24,37 +24,47 @@ import { computed, defineEmits, defineProps, ref } from 'vue';
 import authService from '@/services/auth.service';
 import { useAuthStore } from '@/store/auth.store';
 import { ToastMessage } from '@/helper';
+import { useRouter } from 'vue-router';
 
 const props = defineProps<{
     isShowPlayerInfo?: boolean;
+    adminSeq: number;
 }>();
 const emit = defineEmits(['update:isShowPlayerInfo']);
 const authStore = useAuthStore();
 const isVerifyCodeSended = ref<boolean>(false);
 const verifyCode = ref<string>('');
-const tempVerifyCode = ref<string>('');
+const isLoading = ref<boolean>(false);
+const router = useRouter();
 
 // SMS 보내기
 async function sendVerificationCode() {
     try {
-        const res = await authService.smsAuth({ authValue: authStore.userInfo.adminPhone });
-        console.log(res);
-        tempVerifyCode.value = '111111';
+        isLoading.value = true;
+        const res = await authService.getLoginAuthNumber({ adminSeq: props.adminSeq });
         isVerifyCodeSended.value = true;
     } catch (e) {
         console.log(e);
         ToastMessage.error('인증 번호 발송에 실패 했습니다. 다시 시도해주세요.');
+    } finally {
+        isLoading.value = false;
     }
 }
 
 // 인증 코드 확인
-function confirmVerificationCode() {
-    if (verifyCode.value === tempVerifyCode.value) {
+async function confirmVerificationCode() {
+    try {
+        isLoading.value = true;
+        await authService.certifyLoginAuthNumber({ adminSeq: props.adminSeq, authNumber: verifyCode.value });
         authStore.signIn();
-    } else {
+        router.push('/management/members/list');
+    } catch (e) {
+        console.log(e);
         ToastMessage.error('인증에 실패 했습니다. 다시 시도해주세요.');
+    } finally {
+        isLoading.value = false;
+        closeModal();
     }
-    closeModal();
 }
 
 function closeModal() {

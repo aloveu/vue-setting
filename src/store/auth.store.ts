@@ -13,9 +13,6 @@ export const useAuthStore = defineStore('auth', {
         userInfo: defaultUserInfo,
     }),
     actions: {
-        tempAdminRegister(userInfo) {
-            this.userInfo = userInfo;
-        },
         signIn() {
             this.isLogin = true;
         },
