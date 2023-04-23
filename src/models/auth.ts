@@ -1,9 +1,12 @@
 export interface LoginRequest {
-    adminEmail: string;
-    password: string;
+    adminId: string;
+    adminPwd: string;
 }
 
-export interface Info {
-    name: string;
-    email: string;
+export interface LoginResponse {
+    adminPhone: string;
+    memberStatus: string;
+}
+export interface SmsRequest {
+    authValue: string;
 }

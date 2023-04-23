@@ -1,31 +1,23 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { useAuthStore } from '@/store/auth.store';
-import demoRoute from '@/router/demo-route';
+import ContentsRoutes from '@/router/contents-route';
 
 const routes: Array<RouteRecordRaw> = [
     {
         name: 'Login',
         path: '/login',
         alias: '/',
-        component: () => import('@/pages/Login.vue'),
+        component: () => import('@/pages/auth/Login.vue'),
         meta: {
             title: 'Login',
         },
     },
     {
-        path: '/main',
-        children: demoRoute,
+        path: '/management',
+        children: ContentsRoutes,
         meta: {
             requireLogin: true,
-            title: 'Demo',
-        },
-    },
-    {
-        path: '/demo',
-        children: demoRoute,
-        meta: {
-            requireLogin: true,
-            title: 'Demo',
+            hasContentsLayout: true,
         },
     },
     {
@@ -47,9 +39,8 @@ router.beforeEach(async (to, from, next) => {
         if (!authStore.isLogin) {
             next({ name: 'Login', query: { refUrl: to.fullPath } });
         }
-    } else {
-        next();
     }
+    next();
 });
 
 export { router, routes };

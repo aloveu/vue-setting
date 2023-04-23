@@ -6,8 +6,58 @@ h2.title {
     background-color: #f6f8f9;
     border-radius: 10px 10px 0 0;
 }
-.content{
+.content {
     padding: 20px;
     border-radius: 0 0 10px 10px;
-    background-color: #fff
+    background-color: #fff;
+}
+
+.q-notifications__list--top {
+    top: $header-height;
+}
+
+.text-gray-4 {
+    color: $gray-4 !important;
+}
+.bg-gray-4 {
+    background: $gray-4 !important;
+}
+.text-gray-5 {
+    color: $gray-5 !important;
+}
+.bg-gray-5 {
+    background: $gray-5 !important;
+}
+
+.q-dialog-plugin {
+    min-width: 500px;
+    .q-dialog__title {
+        font-size: 26px;
+        font-weight: 700;
+        color: $black;
+    }
+    .q-icon {
+        align-self: flex-start;
+    }
+    .q-card__section--vert {
+        padding: 20px;
+    }
+    .q-card__actions {
+        padding: 0 20px 20px;
+        .q-btn--rectangle {
+            min-width: 84px !important;
+        }
+    }
+}
+
+.filter-section {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.common-btn-area {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
 }

@@ -21,6 +21,7 @@ h2 {
         color: #000;
         background-color: #fff;
         border-radius: 10px 10px 0 0;
+        border-bottom: 1px solid $gray-2;
     }
 }
 </style>

@@ -1,10 +1,9 @@
 import { defineStore } from 'pinia';
-import { DTO } from '@/models';
+import { useRouter } from 'vue-router';
 
 const defaultUserInfo = {
-    name: '',
-    email: '',
-    accountGroup: null,
+    adminPhone: '',
+    memberStatus: '',
 };
 
 export const useAuthStore = defineStore('auth', {
@@ -14,9 +13,11 @@ export const useAuthStore = defineStore('auth', {
         userInfo: defaultUserInfo,
     }),
     actions: {
-        registerAdmin(userInfo: DTO.Auth.Info) {
-            this.isLogin = true;
+        tempAdminRegister(userInfo) {
             this.userInfo = userInfo;
+        },
+        signIn() {
+            this.isLogin = true;
         },
         signOut() {
             this.isLogin = false;

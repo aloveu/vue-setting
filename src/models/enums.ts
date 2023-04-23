@@ -9,3 +9,7 @@ export enum ErrorCodes {
     DATA_NOT_EMPTY = 'DATA_NOT_EMPTY',
     NOT_ENOUGH_BALANCE = 'NOT_ENOUGH_BALANCE',
 }
+
+export enum ResultCode {
+    SUCCESS = '200',
+}

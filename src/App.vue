@@ -1,19 +1,20 @@
 <template>
-    <Header />
-    <article class="container">
-        <template v-if="hasContentsLayout">
-            <Navbar class="navbar" />
-            <div class="content-container">
-                <BreadCrumb />
-                <div class="box">
-                    <Title />
-                    <router-view />
+    <q-layout>
+        <Header />
+        <article class="container">
+            <template v-if="hasContentsLayout">
+                <Navbar class="navbar" />
+                <div class="content-container">
+                    <div class="box">
+                        <Title />
+                        <router-view />
+                    </div>
+                    <Footer />
                 </div>
-                <Footer />>
-            </div>
-        </template>
-        <router-view v-else />
-    </article>
+            </template>
+            <router-view v-else />
+        </article>
+    </q-layout>
 </template>
 
 <script setup lang="ts">
@@ -25,7 +26,6 @@ import Navbar from '@/components/layout/Navbar.vue';
 import Header from '@/components/layout/Header.vue';
 import Footer from '@/components/layout/Footer.vue';
 import Title from '@/components/layout/Title.vue';
-import BreadCrumb from '@/components/layout/BreadCrumb.vue';
 
 const route = useRoute();
 const authStore = useAuthStore();

@@ -1,6 +1,6 @@
 <template>
     <footer class="footer">
-        <address>&copy; 2022. Domain&trade;. All rights reserved.</address>
+        <address>&copy; 2023. Domain&trade;. All rights reserved.</address>
     </footer>
 </template>
 

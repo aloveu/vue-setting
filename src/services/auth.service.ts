@@ -3,9 +3,10 @@ import http from '@/services/axios';
 
 const authService = {
     signIn: (data: DTO.Auth.LoginRequest) => {
-        // return http.post('/Admin/LoginAdminRequest', data);
-        // 비효율적인 response type정의지만.. 이렇게 써야함.  (axiosResponse Type)
-        return http.get<any, DTO.Auth.Info>('/test/loginAdminRequest.json');
+        return http.post<any, DTO.Auth.LoginResponse>('/admin/login', data);
+    },
+    smsAuth: (data: DTO.Auth.SmsRequest) => {
+        return http.post<any, DTO.Auth.LoginResponse>('/common/smsAuth', data);
     },
 };
 
