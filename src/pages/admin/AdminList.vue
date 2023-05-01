@@ -86,7 +86,7 @@ onMounted(() => {
 
 async function getAdminList(emitPageOptions = null) {
     try {
-        if (emitPageOptions) {
+        if (emitPageOptions?.totalCount) {
             pageOptions.value = emitPageOptions;
         }
         isLoading.value = true;

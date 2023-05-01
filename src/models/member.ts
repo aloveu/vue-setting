@@ -46,3 +46,11 @@ export interface GetMemberStatusResponse {
     blockCount: number;
     withdrawCount: number;
 }
+
+export interface TendencyList {
+    memberTendencySeq: number;
+    memberTendencyName: string;
+    memberTendencyCd: string;
+    parentSeq: number;
+    depth: number;
+}

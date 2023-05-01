@@ -118,7 +118,7 @@ function handlerPaging($event) {
     .paging-select-dropdown {
         position: relative;
         display: inline-flex;
-        min-width: 183px;
+        width: 130px;
         margin-right: 10px;
         cursor: pointer;
         user-select: none;

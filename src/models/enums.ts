@@ -20,5 +20,5 @@ export enum MemberSearchType {
     MemberTendency = 'memberTendency',
     MemberEmail = 'memberEmail',
     MemberPhone = 'memberPhone',
-    MemberRegisterdAt = 'memberRegisterdAt',
+    MemberCreateDt = 'createDt',
 }

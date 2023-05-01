@@ -100,7 +100,7 @@ const searchByOptions = reactive([
     { label: '성향', value: MemberSearchType.MemberTendency },
     { label: 'E-Mail', value: MemberSearchType.MemberEmail },
     { label: '휴대폰번호', value: MemberSearchType.MemberPhone },
-    { label: '가입일시', value: MemberSearchType.MemberRegisterdAt },
+    { label: '가입일시', value: MemberSearchType.MemberCreateDt },
 ]);
 const sexOptions = [
     { label: '전체', value: '' },
@@ -132,7 +132,7 @@ async function getMemberStatus() {
 }
 async function getMemberList(emitPageOptions = null) {
     try {
-        if (emitPageOptions) {
+        if (emitPageOptions?.totalCount) {
             pageOptions.value = emitPageOptions;
         }
         isLoading.value = true;

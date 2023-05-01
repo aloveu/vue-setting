@@ -1,6 +1,5 @@
 import { DTO } from '@/models';
 import http from '@/services/axios';
-import { BlockMemberRequest, DeleteMemberRequest, GetMemberListRequest, GetMemberListResponse, SetSmsTemplateRequest, UpdateMemberRequest } from '@/models/member';
 
 const memberService = {
     getMemberStatus: () => {
@@ -26,6 +25,11 @@ const memberService = {
     },
     sendSmsMessage: (data: DTO.Member.SendSmsMessageRequest) => {
         return http.post<any, void>('/admin/sendSmsToMember', data);
+    },
+
+    // 성향
+    getTendencyList: () => {
+        return http.post<any, DTO.Member.TendencyList[]>('/common/getTendencyList');
     },
 };
 

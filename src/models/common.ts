@@ -13,3 +13,8 @@ export interface PageOptions {
     isAscending?: boolean;
     totalCount?: number;
 }
+
+export interface RangeDate {
+    from: string;
+    to: string;
+}

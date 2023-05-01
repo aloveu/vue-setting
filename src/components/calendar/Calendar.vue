@@ -44,7 +44,6 @@
 <script setup lang="ts">
 import { defineEmits, defineProps, onBeforeMount, ref, watch, withDefaults } from 'vue';
 import dayjs from 'dayjs';
-import { UTCDate } from '@/helper';
 
 const props = withDefaults(
     defineProps<{
@@ -104,7 +103,7 @@ const displayDate = (): string => {
         } else if (props.monthPicker) {
             returnValue = dayjs(`${date.value.year}-${date.value.month}`).format('MM/YYYY');
         } else {
-            returnValue = `${UTCDate.getDisplayTime(date.value, props.timezone, props.isTimeSelect ? 'MM/DD/YYYY HH:mm:ss' : 'MM/DD/YYYY')} (UTC${UTCDate.getUtcOffset(date.value, props.timezone)})`;
+            returnValue = dayjs(date.value).format('YYYY-MM-DD HH-mm-ss');
         }
     }
 

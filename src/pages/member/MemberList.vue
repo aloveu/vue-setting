@@ -7,18 +7,20 @@
             <strong>탈퇴 {{ memberStatus?.withdrawCount ? Filters.numberFormat(memberStatus.withdrawCount) : 0 }}명</strong>
         </div>
         <section class="filter-section">
-            <q-select v-model="searchModel.searchType" :options="searchByOptions" map-options emit-value outlined dense />
-            <q-select v-if="MemberSearchType.Sex === searchModel.searchType" v-model="searchModel.searchKeyword" :options="sexOptions" map-options emit-value outlined dense />
+            <q-select v-model="searchModel.searchType" :options="searchByOptions" map-options emit-value outlined dense style="width: 150px" />
+            <q-select v-if="MemberSearchType.Sex === searchModel.searchType" v-model="searchModel.searchKeyword" :options="sexOptions" map-options emit-value outlined dense style="width: 150px" />
             <q-select
                 v-else-if="MemberSearchType.MemberTendency === searchModel.searchType"
                 v-model="searchModel.searchKeyword"
-                :options="MemberTendencyOptions"
+                :options="memberTendencyOptions"
                 map-options
                 emit-value
                 outlined
                 dense
+                style="width: 150px"
             />
-            <q-input v-else v-model="searchModel.searchKeyword" label="검색어" @keydown.enter="getMemberList" outlined dense />
+            <MultipleCalendar v-else-if="MemberSearchType.MemberCreateDt === searchModel.searchType" v-model:date="registerDateRange" style="width: 220px" />
+            <q-input v-else v-model="searchModel.searchKeyword" label="검색어" @keydown.enter="getMemberList" outlined dense style="width: 150px" />
             <q-btn @click="getMemberList" label="검색" color="primary" icon="search" unelevated />
             <q-space />
             <div class="paging-section">
@@ -85,7 +87,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { DTO } from '@/models';
 import memberService from '@/services/member.service';
 import Table from '@/components/layout/Table.vue';
@@ -93,8 +95,14 @@ import Loading from '@/components/Loading.vue';
 import { Filters, ConfirmMessage, ToastMessage } from '@/helper';
 import { MemberSearchType } from '@/models/enums';
 import PageNavigation from '@/components/PageNavigation.vue';
+import dayjs from 'dayjs';
+import MultipleCalendar from '@/components/calendar/MultipleCalendar.vue';
 
 const isLoading = ref<boolean>(false);
+const registerDateRange = ref({
+    from: dayjs().format('YYYY-MM-DD'),
+    to: dayjs().format('YYYY-MM-DD'),
+});
 const pageOptions = ref<DTO.Common.PageOptions>({
     pageNumber: 1,
     pageSize: 15,
@@ -111,14 +119,14 @@ const searchByOptions = reactive([
     { label: '성향', value: MemberSearchType.MemberTendency },
     { label: 'E-Mail', value: MemberSearchType.MemberEmail },
     { label: '휴대폰번호', value: MemberSearchType.MemberPhone },
-    { label: '가입일시', value: MemberSearchType.MemberRegisterdAt },
+    { label: '가입일시', value: MemberSearchType.MemberCreateDt },
 ]);
 const sexOptions = [
     { label: '전체', value: '' },
     { label: '남', value: '남' },
     { label: '여', value: '여' },
 ];
-const MemberTendencyOptions = reactive([]);
+const memberTendencyOptions = ref([]);
 const memberStatus = ref<DTO.Member.GetMemberStatusResponse>(null);
 const memberList = ref([]);
 const allSelect = ref<boolean>(false);
@@ -127,11 +135,24 @@ const selectedMemberList = computed(() => {
 });
 const isModifyModal = ref<boolean>(false);
 
+watch(
+    () => searchModel.value.searchType,
+    () => {
+        if (searchModel.value.searchType === MemberSearchType.MemberCreateDt) {
+            searchModel.value.searchKeyword = dayjs().format('YYYY-MM-DD HH-mm-ss');
+        } else {
+            searchModel.value.searchKeyword = '';
+        }
+    }
+);
+
 onMounted(() => {
     getMemberStatus();
+    getTendencyList();
     getMemberList();
     getMemberTendencyOptions();
 });
+
 async function getMemberStatus() {
     try {
         const res = await memberService.getMemberStatus();
@@ -141,14 +162,27 @@ async function getMemberStatus() {
         ToastMessage.error(e);
     }
 }
+async function getTendencyList() {
+    try {
+        const res = await memberService.getTendencyList();
+        memberTendencyOptions.value = res.map((x) => {
+            return { label: x.memberTendencyName, value: x.memberTendencySeq };
+        });
+    } catch (e) {
+        ToastMessage.error(e);
+    }
+}
 async function getMemberList(emitPageOptions = null) {
     try {
-        if (emitPageOptions) {
+        if (emitPageOptions?.totalCount) {
             pageOptions.value = emitPageOptions;
         }
         isLoading.value = true;
-
-        const res = await memberService.getMembers({ ...searchModel.value, ...pageOptions.value });
+        const params = { ...searchModel.value, ...pageOptions.value };
+        if (params.searchType === DTO.Enums.MemberSearchType.MemberCreateDt) {
+            params.searchKeyword = `${registerDateRange.value.from}|${registerDateRange.value.to}`;
+        }
+        const res = await memberService.getMembers(params);
 
         pageOptions.value.totalCount = res.totalCount;
         memberList.value = res.list.map((x) => {
