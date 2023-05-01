@@ -1,18 +1,34 @@
 <template>
     <div class="content">
-        <div class="common-btn-area">
-            <q-btn @click="openSendSmsModal(false)" :disable="!selectedMemberList.length" label="선택 문자 보내기" color="secondary" unelevated />
-            <q-btn @click="openSendSmsModal(true)" label="전체 문자 보내기" color="secondary" unelevated />
-            <q-space />
-            <div class="paging-section">
-                <PageNavigation :pageOptions="pageOptions" :isListLoading="isLoading" @listChange="getMemberList($event)" />
-            </div>
-        </div>
         <div class="status-box">
             <strong>전체목록</strong>
             <strong>총회원수 {{ memberStatus?.totalCount ? Filters.numberFormat(memberStatus.totalCount) : 0 }}명</strong>
             <strong>차단 {{ memberStatus?.blockCount ? Filters.numberFormat(memberStatus.blockCount) : 0 }}명</strong>
             <strong>탈퇴 {{ memberStatus?.withdrawCount ? Filters.numberFormat(memberStatus.withdrawCount) : 0 }}명</strong>
+        </div>
+        <section class="filter-section">
+            <q-select v-model="searchModel.searchType" :options="searchByOptions" map-options emit-value outlined dense />
+            <q-select v-if="MemberSearchType.Sex === searchModel.searchType" v-model="searchModel.searchKeyword" :options="sexOptions" map-options emit-value outlined dense />
+            <q-select
+                v-else-if="MemberSearchType.MemberTendency === searchModel.searchType"
+                v-model="searchModel.searchKeyword"
+                :options="MemberTendencyOptions"
+                map-options
+                emit-value
+                outlined
+                dense
+            />
+            <q-input v-else v-model="searchModel.searchKeyword" label="검색어" @keydown.enter="getMemberList" outlined dense />
+            <q-btn @click="getMemberList" label="검색" color="primary" icon="search" unelevated />
+            <q-space />
+            <div class="paging-section">
+                <PageNavigation :pageOptions="pageOptions" :isListLoading="isLoading" @listChange="getMemberList($event)" />
+            </div>
+        </section>
+
+        <div class="common-btn-area">
+            <q-btn @click="openSendSmsModal(false)" :disable="!selectedMemberList.length" label="선택 문자 보내기" color="secondary" unelevated />
+            <q-btn @click="openSendSmsModal(true)" label="전체 문자 보내기" color="secondary" unelevated />
         </div>
 
         <Table class="member-list">
@@ -59,12 +75,13 @@
 import { DTO } from '@/models';
 import Table from '@/components/layout/Table.vue';
 import Loading from '@/components/Loading.vue';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import SendSmsModal from '@/pages/sms/SendSmsModal.vue';
 import { Member } from '@/models/member';
 import memberService from '@/services/member.service';
 import PageNavigation from '@/components/PageNavigation.vue';
 import { Filters, ToastMessage } from '@/helper';
+import { MemberSearchType } from '@/models/enums';
 
 const isLoading = ref<boolean>(false);
 const pageOptions = ref<DTO.Common.PageOptions>({
@@ -72,6 +89,24 @@ const pageOptions = ref<DTO.Common.PageOptions>({
     pageSize: 15,
     totalCount: 0,
 });
+const searchModel = ref({
+    searchType: '',
+    searchKeyword: '',
+});
+const searchByOptions = reactive([
+    { label: '전체', value: '' },
+    { label: '이름', value: MemberSearchType.MemberName },
+    { label: '성별', value: MemberSearchType.Sex },
+    { label: '성향', value: MemberSearchType.MemberTendency },
+    { label: 'E-Mail', value: MemberSearchType.MemberEmail },
+    { label: '휴대폰번호', value: MemberSearchType.MemberPhone },
+    { label: '가입일시', value: MemberSearchType.MemberRegisterdAt },
+]);
+const sexOptions = [
+    { label: '전체', value: '' },
+    { label: '남', value: '남' },
+    { label: '여', value: '여' },
+];
 const memberStatus = ref<DTO.Member.GetMemberStatusResponse>(null);
 const memberList = ref([]);
 const allSelect = ref<boolean>(false);
@@ -102,7 +137,7 @@ async function getMemberList(emitPageOptions = null) {
         }
         isLoading.value = true;
 
-        const res = await memberService.getMembers({ searchType: '', searchKeyword: '', ...pageOptions.value });
+        const res = await memberService.getMembers({ ...searchModel.value, ...pageOptions.value });
 
         pageOptions.value.totalCount = res.totalCount;
         memberList.value = res.list.map((x) => {
@@ -135,7 +170,7 @@ function sendSmsThisMemeber(member: Member) {
 
 <style scoped lang="scss">
 .member-list {
-    margin-bottom: 20px;
+    margin: 20px 0;
     tr {
         cursor: pointer;
     }

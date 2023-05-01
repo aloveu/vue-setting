@@ -33,8 +33,9 @@ export interface BlockMemberRequest {
     memberId: string;
 }
 export interface SendSmsMessageRequest {
-    memberPhoneList: string[];
-    smsMessage: string;
+    memberSeqList: number[];
+    content: string;
+    isAll: boolean;
 }
 
 export interface SetSmsTemplateRequest {

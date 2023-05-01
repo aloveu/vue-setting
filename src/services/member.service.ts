@@ -25,7 +25,7 @@ const memberService = {
         return http.post<any, void>('/admin/sendSmsMessage', data);
     },
     sendSmsMessage: (data: DTO.Member.SendSmsMessageRequest) => {
-        return http.post<any, void>('/admin/sendSmsMessage', data);
+        return http.post<any, void>('/admin/sendSmsToMember', data);
     },
 };
 

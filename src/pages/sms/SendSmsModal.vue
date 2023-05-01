@@ -52,7 +52,7 @@ const isLoading = ref<boolean>(false);
 const smsMessage = ref<string>('');
 
 onMounted(() => {
-    getSmsTemplate();
+    // getSmsTemplate();
 });
 
 async function getSmsTemplate() {
@@ -73,11 +73,12 @@ function sendSmsMessage() {
     ConfirmMessage({ title: 'Confirm', message: 'SMS 문자를 전송 하시겠습니까?' }).then(async () => {
         try {
             isLoading.value = true;
-            const res = await memberService.sendSmsMessage({
-                memberPhoneList: [],
-                smsMessage: smsMessage.value,
+            const membverSeqList = props.memberInfos.map((x) => x.memberSeq);
+            await memberService.sendSmsMessage({
+                memberSeqList: membverSeqList,
+                content: smsMessage.value,
+                isAll: !!props.isAllMemberSend,
             });
-            console.log(res);
 
             emit('update:isSendSmsModal', false);
         } catch (e) {
