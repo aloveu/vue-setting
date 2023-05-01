@@ -18,34 +18,17 @@
             </span>
 
             <span class="p-buttonset">
-                <button @click="getList(1)" :disabled="props.isListLoading || 1 === props.pageOptions.currentPage" type="button" class="btn-paging">
+                <button @click="getList(1)" :disabled="props.isListLoading || 1 === props.pageOptions.pageNumber" type="button" class="btn-paging">
                     <q-icon name="keyboard_double_arrow_left" />
                 </button>
-                <button :disabled="props.isListLoading || 1 === props.pageOptions.currentPage" @click="getList(props.pageOptions.currentPage - 1)" type="button" class="btn-paging">
+                <button :disabled="props.isListLoading || 1 === props.pageOptions.pageNumber" @click="getList(props.pageOptions.pageNumber - 1)" type="button" class="btn-paging">
                     <q-icon name="keyboard_arrow_left" />
                 </button>
 
                 <em class="btn-paging current-page">
-                    {{ props.pageOptions.currentPage }}
-
-                    <q-menu v-model="isShowInputPanel" self="top middle">
-                        <div class="page-input-overlay">
-                            <input
-                                v-model="pageInput"
-                                @keyup.enter="handlerPaging($event)"
-                                type="number"
-                                pattern="[0-9]*"
-                                v-digitOnly
-                                v-focus
-                                class="page-input"
-                                autocomplete="off"
-                                placeholder="Page Number"
-                            />
-                            <button @click="handlerPaging($event)" type="button" class="btn-go">Go</button>
-                        </div>
-                    </q-menu>
+                    {{ props.pageOptions.pageNumber }}
                 </em>
-                <button @click="getList(props.pageOptions.currentPage + 1)" :disabled="props.isListLoading || !hasMoreList" type="button" class="btn-paging">
+                <button @click="getList(props.pageOptions.pageNumber + 1)" :disabled="props.isListLoading || !hasMoreList" type="button" class="btn-paging">
                     <q-icon name="keyboard_arrow_right" size="24px" />
                 </button>
             </span>
@@ -63,9 +46,6 @@ const props = defineProps<{
     isListLoading: boolean;
 }>();
 
-// input 페이징 패널 호출
-const isShowInputPanel = ref<boolean>(false);
-
 // emit 정의
 const emit = defineEmits(['listChange']);
 const pageSize = ref<number>(10);
@@ -79,19 +59,19 @@ const pageCountList: DTO.Common.DropDownListItem[] = [
 ];
 
 const getFirstRange = computed((): number => {
-    return props.pageOptions.currentPage * props.pageOptions.pageSize - props.pageOptions.pageSize + 1;
+    return props.pageOptions.pageNumber * props.pageOptions.pageSize - props.pageOptions.pageSize + 1;
 });
 
 const getLastRange = computed((): number => {
-    if (props.pageOptions.currentPage * props.pageOptions.pageSize > props.pageOptions.totalCount) {
+    if (props.pageOptions.pageNumber * props.pageOptions.pageSize > props.pageOptions.totalCount) {
         return props.pageOptions.totalCount;
     }
-    return props.pageOptions.currentPage * props.pageOptions.pageSize;
+    return props.pageOptions.pageNumber * props.pageOptions.pageSize;
 });
 
 onUpdated(() => {
     pageSize.value = props.pageOptions.pageSize;
-    hasMoreList.value = props.pageOptions.currentPage * props.pageOptions.pageSize < props.pageOptions.totalCount;
+    hasMoreList.value = props.pageOptions.pageNumber * props.pageOptions.pageSize < props.pageOptions.totalCount;
 });
 
 // 노출 length 변경때
@@ -99,7 +79,7 @@ function onListCountChanged(size) {
     const pageOptions = {
         ...props.pageOptions,
         pageSize: size,
-        currentPage: 1,
+        pageNumber: 1,
     } as DTO.Common.PageOptions;
     emit('listChange', pageOptions);
 }
@@ -108,7 +88,7 @@ function onListCountChanged(size) {
 function getList(page: number) {
     const pageOptions = {
         ...props.pageOptions,
-        currentPage: page,
+        pageNumber: page,
     } as DTO.Common.PageOptions;
     emit('listChange', pageOptions);
 }
@@ -127,7 +107,6 @@ function handlerPaging($event) {
 
     getList(Number(pageInput.value));
     pageInput.value = null;
-    isShowInputPanel.value = false;
 }
 </script>
 

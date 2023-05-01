@@ -8,7 +8,7 @@ export interface CalendarDateOptionItem extends DropDownListItem {
 }
 
 export interface PageOptions {
-    currentPage: number;
+    pageNumber: number;
     pageSize: number;
     isAscending?: boolean;
     totalCount?: number;

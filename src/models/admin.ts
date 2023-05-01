@@ -1,5 +1,10 @@
+import { Member } from '@/models/member';
+
 export interface GetAdminListRequest {
-    adminId: string;
+    searchType: string;
+    searchKeyword: string;
+    pageNumber: number;
+    pageSize: number;
 }
 export interface GetAdminInfoRequest {
     adminId: string;
@@ -8,21 +13,28 @@ export interface AdminInfo {
     adminName: string;
     adminId: string;
     adminPhone: string;
-    adminRegistedAt: string;
+    createDt: string;
+    memberStatus: string;
+}
+export interface GetAdminInfoResponse {
+    list: AdminInfo[];
+    totalCount: number;
+    totalPage: number;
 }
 export interface CreateAdminRequest {
     adminName: string;
+    adminSeq?: number;
     adminId: string;
     adminPhone: string;
-    adminPassword: string;
+    adminPwd: string;
     confirmPassword: string;
     adminEmail: string;
 }
 
-export interface DeleteAdminRequest {
+export interface CheckAdminId {
     adminId: string;
 }
 
-export interface BlockMemberRequest {
-    memberId: string;
+export interface DeleteAdminRequest {
+    adminSeq: number;
 }

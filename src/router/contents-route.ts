@@ -43,12 +43,17 @@ const ContentsRoutes: Array<RouteRecordRaw> = [
             {
                 path: 'free',
                 meta: { title: '무료접속현황' },
-                component: () => import('@/pages/member/MemberList.vue'),
+                component: () => import('@/pages/report/LoginReport.vue'),
             },
             {
                 path: 'paid',
                 meta: { title: '유료접속현황' },
-                component: () => import('@/pages/member/MemberList.vue'),
+                component: () => import('@/pages/report/LoginReport.vue'),
+            },
+            {
+                path: 'day',
+                meta: { title: '일일접속현황' },
+                component: () => import('@/pages/report/LoginReport.vue'),
             },
         ],
     },
@@ -58,30 +63,7 @@ const ContentsRoutes: Array<RouteRecordRaw> = [
             title: '관리자',
             icon: 'sym_o_lock_person',
         },
-        children: [
-            {
-                path: 'list',
-                component: () => import('@/pages/admin/AdminList.vue'),
-                meta: {
-                    title: '관리자 목록',
-                },
-            },
-            {
-                path: 'create',
-                component: () => import('@/pages/admin/AdminEdit.vue'),
-                meta: {
-                    title: '관리자 등록',
-                },
-            },
-            {
-                path: 'detail/:adminId',
-                component: () => import('@/pages/admin/AdminEdit.vue'),
-                meta: {
-                    title: '관리자 수정',
-                    isHideMenu: true,
-                },
-            },
-        ],
+        component: () => import('@/pages/admin/AdminList.vue'),
     },
 ];
 

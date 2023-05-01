@@ -29,6 +29,9 @@ http.interceptors.response.use(
         if (response.data.resultCode !== ResultCode.SUCCESS) {
             return Promise.reject(response.data?.resultMessage);
         }
+        if (response.data.totalCount) {
+            return { list: response.data.data, totalCount: response.data.totalCount, totalPage: response.data.totalPage };
+        }
         return response.data.data;
     },
     async (error) => {

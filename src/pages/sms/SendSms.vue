@@ -3,10 +3,19 @@
         <div class="common-btn-area">
             <q-btn @click="openSendSmsModal(false)" :disable="!selectedMemberList.length" label="선택 문자 보내기" color="secondary" unelevated />
             <q-btn @click="openSendSmsModal(true)" label="전체 문자 보내기" color="secondary" unelevated />
+            <q-space />
+            <div class="paging-section">
+                <PageNavigation :pageOptions="pageOptions" :isListLoading="isLoading" @listChange="getMemberList($event)" />
+            </div>
         </div>
-        <div>전체목록 | 총회원수 20,570명 중 차단 12명 탈퇴 50명</div>
+        <div class="status-box">
+            <strong>전체목록</strong>
+            <strong>총회원수 {{ memberStatus?.totalCount ? Filters.numberFormat(memberStatus.totalCount) : 0 }}명</strong>
+            <strong>차단 {{ memberStatus?.blockCount ? Filters.numberFormat(memberStatus.blockCount) : 0 }}명</strong>
+            <strong>탈퇴 {{ memberStatus?.withdrawCount ? Filters.numberFormat(memberStatus.withdrawCount) : 0 }}명</strong>
+        </div>
 
-        <Table>
+        <Table class="member-list">
             <template v-slot:header>
                 <tr>
                     <th>
@@ -36,6 +45,10 @@
             </template>
         </Table>
 
+        <div class="paging-section">
+            <PageNavigation :pageOptions="pageOptions" :isListLoading="isLoading" @listChange="getMemberList($event)" />
+        </div>
+
         <SendSmsModal v-if="isSendSmsModal" v-model:isSendSmsModal="isSendSmsModal" :isAllMemberSend="isAllMemberSend" :memberInfos="selectedMemberList" />
 
         <Loading v-if="isLoading" />
@@ -43,13 +56,23 @@
 </template>
 
 <script setup lang="ts">
+import { DTO } from '@/models';
 import Table from '@/components/layout/Table.vue';
 import Loading from '@/components/Loading.vue';
 import { computed, onMounted, ref } from 'vue';
 import SendSmsModal from '@/pages/sms/SendSmsModal.vue';
 import { Member } from '@/models/member';
+import memberService from '@/services/member.service';
+import PageNavigation from '@/components/PageNavigation.vue';
+import { Filters, ToastMessage } from '@/helper';
 
 const isLoading = ref<boolean>(false);
+const pageOptions = ref<DTO.Common.PageOptions>({
+    pageNumber: 1,
+    pageSize: 15,
+    totalCount: 0,
+});
+const memberStatus = ref<DTO.Member.GetMemberStatusResponse>(null);
 const memberList = ref([]);
 const allSelect = ref<boolean>(false);
 const selectedMemberList = computed(() => {
@@ -59,25 +82,33 @@ const isSendSmsModal = ref<boolean>(false);
 const isAllMemberSend = ref<boolean>(false);
 
 onMounted(() => {
+    getMemberStatus();
     getMemberList();
 });
 
-async function getMemberList() {
+async function getMemberStatus() {
     try {
+        const res = await memberService.getMemberStatus();
+
+        memberStatus.value = res;
+    } catch (e) {
+        ToastMessage.error(e);
+    }
+}
+async function getMemberList(emitPageOptions = null) {
+    try {
+        if (emitPageOptions) {
+            pageOptions.value = emitPageOptions;
+        }
         isLoading.value = true;
 
-        // const res = await memberService.getMembers({});
+        const res = await memberService.getMembers({ searchType: '', searchKeyword: '', ...pageOptions.value });
 
-        memberList.value = [
-            {
-                memberId: 'asdfas',
-                memberName: '정상천',
-                memberPhone: '010-1111-2222',
-                memberEmail: 'asdf@sdfas.com',
-                memberAddr: '서울특별시,.....',
-                isSelected: false,
-            },
-        ];
+        pageOptions.value.totalCount = res.totalCount;
+        memberList.value = res.list.map((x) => {
+            x.isSelected = false;
+            return x;
+        });
     } catch (e) {
         console.log(e);
     } finally {
@@ -103,7 +134,10 @@ function sendSmsThisMemeber(member: Member) {
 </script>
 
 <style scoped lang="scss">
-tr {
-    cursor: pointer;
+.member-list {
+    margin-bottom: 20px;
+    tr {
+        cursor: pointer;
+    }
 }
 </style>

@@ -1,10 +1,13 @@
 import { DTO } from '@/models';
 import http from '@/services/axios';
-import { BlockMemberRequest, DeleteMemberRequest, GetMemberListRequest, SetSmsTemplateRequest, UpdateMemberRequest } from '@/models/member';
+import { BlockMemberRequest, DeleteMemberRequest, GetMemberListRequest, GetMemberListResponse, SetSmsTemplateRequest, UpdateMemberRequest } from '@/models/member';
 
 const memberService = {
+    getMemberStatus: () => {
+        return http.get<any, DTO.Member.GetMemberStatusResponse>('/admin/getMemberListCount');
+    },
     getMembers: (data: DTO.Member.GetMemberListRequest) => {
-        return http.post<any, DTO.Member.Member[]>('/admin/getMemberList', data);
+        return http.post<any, DTO.Member.GetMemberListResponse>('/admin/getMemberList', data);
     },
     updateMemberInfo: (data: DTO.Member.UpdateMemberRequest) => {
         return http.post<any, void>('/admin/updateMemberInfo', data);
