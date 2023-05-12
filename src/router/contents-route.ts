@@ -43,17 +43,17 @@ const ContentsRoutes: Array<RouteRecordRaw> = [
             {
                 path: 'free',
                 meta: { title: '무료접속현황' },
-                component: () => import('@/pages/report/LoginReport.vue'),
+                component: () => import('@/pages/report/FreeLoginReport.vue'),
             },
             {
                 path: 'paid',
                 meta: { title: '유료접속현황' },
-                component: () => import('@/pages/report/LoginReport.vue'),
+                component: () => import('@/pages/report/PaidLoginReport.vue'),
             },
             {
                 path: 'day',
                 meta: { title: '일일접속현황' },
-                component: () => import('@/pages/report/LoginReport.vue'),
+                component: () => import('@/pages/report/DayLoginReport.vue'),
             },
         ],
     },

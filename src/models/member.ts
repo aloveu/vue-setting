@@ -26,11 +26,11 @@ export interface UpdateMemberRequest {
 }
 
 export interface DeleteMemberRequest {
-    memberId: string;
+    memberSeqList: number[];
 }
 
 export interface BlockMemberRequest {
-    memberId: string;
+    memberSeqList: number[];
 }
 export interface SendSmsMessageRequest {
     memberSeqList: number[];
