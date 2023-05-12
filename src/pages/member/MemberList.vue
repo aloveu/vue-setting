@@ -166,7 +166,7 @@ async function getTendencyList() {
     try {
         const res = await memberService.getTendencyList();
         memberTendencyOptions.value = res.map((x) => {
-            return { label: x.memberTendencyName, value: x.memberTendencySeq };
+            return { label: x.memberTendencyName, value: x.memberTendencyCd };
         });
     } catch (e) {
         ToastMessage.error(e);

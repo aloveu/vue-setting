@@ -20,12 +20,12 @@
                     <template v-slot:body>
                         <tr v-for="(member, i) in props.memberInfos" :key="i">
                             <td>{{ member.memberName }}</td>
-                            <td>회사번호 필요</td>
+                            <td>010-7586-8888</td>
                             <td>{{ member.memberPhone }}</td>
                         </tr>
                     </template>
                 </Table>
-                <q-input v-model="smsMessage" outlined type="textarea" />
+                <q-input v-model="smsMessage" outlined type="textarea" style="margin-top: 10px" />
             </q-card-section>
 
             <q-card-actions align="right">

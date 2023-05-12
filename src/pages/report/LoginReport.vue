@@ -7,24 +7,11 @@
             <strong>탈퇴 {{ memberStatus?.withdrawCount ? Filters.numberFormat(memberStatus.withdrawCount) : 0 }}명</strong>
         </div>
         <section class="filter-section">
-            <q-select v-model="searchModel.searchType" :options="searchByOptions" map-options emit-value outlined dense />
-            <q-select v-if="MemberSearchType.Sex === searchModel.searchType" v-model="searchModel.searchKeyword" :options="sexOptions" map-options emit-value outlined dense />
-            <q-select
-                v-else-if="MemberSearchType.MemberTendency === searchModel.searchType"
-                v-model="searchModel.searchKeyword"
-                :options="MemberTendencyOptions"
-                map-options
-                emit-value
-                outlined
-                dense
-            />
-            <q-input v-else v-model="searchModel.searchKeyword" label="검색어" @keydown.enter="getMemberList" outlined dense />
-            <q-btn @click="getMemberList" label="검색" color="primary" icon="search" unelevated />
-            <q-space />
-            <div class="paging-section">
-                <PageNavigation :pageOptions="pageOptions" :isListLoading="isLoading" @listChange="getMemberList($event)" />
-            </div>
+            <q-btn-toggle v-model="selectedTendency" stack toggle-color="primary" :options="memberTendencyOptions" style="flex-wrap: wrap" />
         </section>
+        <div class="paging-section" style="margin-bottom: 20px">
+            <PageNavigation :pageOptions="pageOptions" :isListLoading="isLoading" @listChange="getMemberList($event)" />
+        </div>
         <Table>
             <template v-slot:header>
                 <tr>
@@ -74,10 +61,6 @@
             <div class="paging-section">
                 <PageNavigation :pageOptions="pageOptions" :isListLoading="isLoading" @listChange="getMemberList($event)" />
             </div>
-            <q-space />
-            <q-btn @click="openModifyModal" :disable="selectedMemberList.length !== 1" label="선택수정" color="secondary" unelevated />
-            <q-btn @click="handleDeleteMember" :disable="!selectedMemberList.length" label="선택삭제" color="negative" unelevated />
-            <q-btn @click="handleBlockMember" :disable="!selectedMemberList.length" label="선택차단" color="negative" unelevated />
         </div>
 
         <Loading v-if="isLoading" />
@@ -85,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { DTO } from '@/models';
 import memberService from '@/services/member.service';
 import Table from '@/components/layout/Table.vue';
@@ -118,7 +101,7 @@ const sexOptions = [
     { label: '남', value: '남' },
     { label: '여', value: '여' },
 ];
-const MemberTendencyOptions = reactive([]);
+const memberTendencyOptions = ref([]);
 const memberStatus = ref<DTO.Member.GetMemberStatusResponse>(null);
 const memberList = ref([]);
 const allSelect = ref<boolean>(false);
@@ -126,18 +109,37 @@ const selectedMemberList = computed(() => {
     return memberList.value.filter((x) => x.isSelected);
 });
 const isModifyModal = ref<boolean>(false);
+const selectedTendency = ref('');
 
 onMounted(() => {
     getMemberStatus();
+    getTendencyList();
     getMemberList();
-    getMemberTendencyOptions();
 });
+
+watch(
+    () => selectedTendency.value,
+    () => {
+        getMemberList();
+    }
+);
 async function getMemberStatus() {
     try {
         const res = await memberService.getMemberStatus();
 
         memberStatus.value = res;
     } catch (e) {
+        ToastMessage.error(e);
+    }
+}
+async function getTendencyList() {
+    try {
+        const res = await memberService.getTendencyList();
+        memberTendencyOptions.value = res.map((x) => {
+            return { label: x.memberTendencyName, value: x.memberTendencyCd };
+        });
+    } catch (e) {
+        console.log(e);
         ToastMessage.error(e);
     }
 }
@@ -148,7 +150,7 @@ async function getMemberList(emitPageOptions = null) {
         }
         isLoading.value = true;
 
-        const res = await memberService.getMembers({ ...searchModel.value, ...pageOptions.value });
+        const res = await memberService.getMembers({ searchType: DTO.Enums.MemberSearchType.MemberTendency, searchKeyword: selectedTendency.value, ...pageOptions.value });
 
         pageOptions.value.totalCount = res.totalCount;
         memberList.value = res.list.map((x) => {
@@ -156,19 +158,7 @@ async function getMemberList(emitPageOptions = null) {
             return x;
         });
     } catch (e) {
-        ToastMessage.error(e);
-    } finally {
-        isLoading.value = false;
-    }
-}
-
-// 성향 리스트
-async function getMemberTendencyOptions() {
-    try {
-        isLoading.value = true;
-
-        // const res = await memberService.getMembers(searchModel.value);
-    } catch (e) {
+        console.log(e);
         ToastMessage.error(e);
     } finally {
         isLoading.value = false;
@@ -178,67 +168,6 @@ async function getMemberTendencyOptions() {
 function handleAllSelect() {
     memberList.value.forEach((x) => {
         x.isSelected = allSelect.value;
-    });
-}
-
-function openModifyModal() {
-    // 수정 모달 띄우기
-    isModifyModal.value = true;
-}
-
-async function handleUpdateMember(memberInfo) {
-    // 수정
-    try {
-        isLoading.value = true;
-
-        await memberService.updateMemberInfo({
-            memberId: memberInfo.memberId,
-        });
-        ToastMessage.success('Success');
-    } catch (e) {
-        console.log(e);
-        ToastMessage.error('실패했습니다.');
-    } finally {
-        isLoading.value = false;
-        isModifyModal.value = false;
-    }
-}
-
-function handleDeleteMember(memberInfo) {
-    // 삭제
-    ConfirmMessage({ title: '회원삭제', message: `${memberInfo.memberName} 을 삭제하시겠습니까?` }).then(async () => {
-        try {
-            isLoading.value = true;
-
-            await memberService.deleteMember({
-                memberId: memberInfo.memberId,
-            });
-            ToastMessage.success('Success');
-        } catch (e) {
-            console.log(e);
-            ToastMessage.error('삭제 실패했습니다.');
-        } finally {
-            isLoading.value = false;
-        }
-    });
-}
-
-function handleBlockMember(memberInfo) {
-    // 차단
-    ConfirmMessage({ title: '회원 차단', message: `${memberInfo.memberName} 을 삭제하시겠습니까?` }).then(async () => {
-        try {
-            isLoading.value = true;
-
-            await memberService.blockMember({
-                memberId: memberInfo.memberId,
-            });
-            ToastMessage.success('Success');
-        } catch (e) {
-            console.log(e);
-            ToastMessage.error('차단이 실패했습니다.');
-        } finally {
-            isLoading.value = false;
-        }
     });
 }
 </script>
