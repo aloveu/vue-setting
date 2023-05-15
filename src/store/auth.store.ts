@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-import { useRouter } from 'vue-router';
 
 const defaultUserInfo = {
     adminPhone: '',
@@ -17,10 +16,9 @@ export const useAuthStore = defineStore('auth', {
             this.isLogin = true;
         },
         signOut() {
-            const router = useRouter();
             this.isLogin = false;
             this.userInfo = defaultUserInfo;
-            router.push('/');
+            location.href = '/';
         },
     },
     persist: {

@@ -115,6 +115,7 @@ function handleDeleteMember(adminInfo) {
             isLoading.value = true;
 
             await adminService.deleteAdmin({ adminSeq: adminInfo.adminSeq });
+            getAdminList();
             ToastMessage.success('삭제 성공했습니다.');
         } catch (e) {
             console.log(e);

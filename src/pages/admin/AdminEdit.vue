@@ -28,7 +28,16 @@
                     <tr>
                         <th>패스워드</th>
                         <td>
-                            <q-input v-model="adminRegForm.adminPwd" :error="vuelidate.adminPwd.$error" @blur="vuelidate.adminPwd.$touch" type="password" hide-bottom-space outlined dense />
+                            <q-input
+                                v-model="adminRegForm.adminPwd"
+                                :error="vuelidate.adminPwd.$error"
+                                @blur="vuelidate.adminPwd.$touch"
+                                error-message="8자 이상 입력해주세요"
+                                type="password"
+                                hide-bottom-space
+                                outlined
+                                dense
+                            />
                         </td>
                     </tr>
                     <tr>
@@ -82,7 +91,7 @@ import { CreateAdminRequest } from '@/models/admin';
 import { useRoute } from 'vue-router';
 import adminService from '@/services/admin.service';
 import { ToastMessage } from '@/helper';
-import { email, required, sameAs } from '@vuelidate/validators';
+import { email, minLength, required, sameAs } from '@vuelidate/validators';
 import useVuelidate from '@vuelidate/core';
 
 const props = defineProps<{
@@ -105,7 +114,7 @@ const adminRegRules = computed(() => ({
     adminId: { required },
     adminName: { required },
     adminPhone: { required },
-    adminPwd: { required },
+    adminPwd: { required, minLength: minLength(8) },
     confirmPassword: { required, sameAs: sameAs(adminRegForm.adminPwd) },
     adminEmail: { required, email },
 }));
@@ -122,6 +131,7 @@ async function createAdmin() {
         isLoading.value = true;
         await adminService.createAdmin(adminRegForm);
         ToastMessage.success('Success');
+        emit('success');
     } catch (e) {
         console.log(e);
         ToastMessage.error('관리자 등록에 실패 했습니다. 다시 시도해 주세요.');
