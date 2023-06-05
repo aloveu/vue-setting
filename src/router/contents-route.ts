@@ -65,6 +65,20 @@ const ContentsRoutes: Array<RouteRecordRaw> = [
         },
         component: () => import('@/pages/admin/AdminList.vue'),
     },
+    {
+        path: 'settings',
+        meta: {
+            title: 'APP 제어',
+            icon: 'sym_o_settings',
+        },
+        children: [
+            {
+                path: '',
+                meta: { title: '댓글 필터' },
+                component: () => import('@/pages/settings/FilterlingSetting.vue'),
+            },
+        ],
+    },
 ];
 
 export default ContentsRoutes;

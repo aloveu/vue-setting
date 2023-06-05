@@ -73,3 +73,15 @@ h2.title {
     justify-content: flex-end;
     margin-top: 20px;
 }
+.custom-modal {
+    .header {
+        height: auto;
+        padding: 20px 15px;
+        background: #efefef;
+        border-bottom: 1px solid #c5c5c5;
+        .title {
+            font-weight: 700;
+            font-size: 18px;
+        }
+    }
+}

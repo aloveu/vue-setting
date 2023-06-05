@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useAuthStore } from '@/store/auth.store';
 import { DTO } from '@/models';
 import { ResultCode } from '@/models/enums';
 
@@ -17,6 +16,8 @@ http.interceptors.request.use(
         if (request.url.includes('//') || request.url.includes('assets/js')) {
             request.baseURL = '';
         }
+
+        // request.headers.Authrozation = `3xCv29981_Tx091dUx98_84PTx905EB`;
         return request;
     },
     (error) => {
