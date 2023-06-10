@@ -1,7 +1,7 @@
 <template>
     <q-header elevated class="header">
         <q-toolbar>
-            <q-btn :to="`${authStore.isLogin ? '/management/members' : '/login'}`" flat round dense icon="sym_o_home" class="q-mr-sm" size="20px" />
+            <q-btn :to="`${authStore.isLogin ? '/management/members/list' : '/login'}`" flat round dense icon="sym_o_home" class="q-mr-sm" size="20px" />
 
             <q-toolbar-title>PLAY STAGE ADMIN</q-toolbar-title>
 
