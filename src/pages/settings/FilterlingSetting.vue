@@ -21,9 +21,19 @@
             <template v-slot:body>
                 <tr @click="openFilteringModifyModal(filterInfo)" v-for="(filterInfo, i) in filteringTextList" :key="i">
                     <td>{{ filterInfo.filterWord }}</td>
-                    <td>{{ filterInfo.filterStatus }}</td>
+                    <td class="text-center">{{ filterInfo.isActive ? '필터 적용' : '필터 미적용' }}</td>
                     <td>{{ dayjs(filterInfo.createDt).format('YYYY-MM-DD HH:mm:ss') }}</td>
-                    <td><q-btn @click="deleteFilteringText(filterInfo)" label="삭제" color="primary" /></td>
+                    <td class="text-center">
+                        <q-btn
+                            @click="
+                                $event.stopPropagation();
+                                deleteFilteringText(filterInfo);
+                            "
+                            label="삭제"
+                            color="negative"
+                            unelevated
+                        />
+                    </td>
                 </tr>
                 <tr class="text-center" v-if="!filteringTextList.length & !isLoading">
                     <td colspan="100%">No Data</td>
@@ -39,14 +49,14 @@
             <q-btn @click="openFilteringRegisterModal" label="단어 등록" color="primary" unelevated />
         </div>
 
-        <FilteringRegisterModal v-if="isRegisterModal" v-model:isRegisterModal="isRegisterModal" :filterInfo="selectedFilterInfo" />
+        <FilteringRegisterModal v-if="isRegisterModal" v-model:isRegisterModal="isRegisterModal" :filterInfo="selectedFilterInfo" @successRegister="getFilterList" />
         <Loading v-if="isLoading" />
     </div>
 </template>
 <script setup lang="ts">
 import dayjs from 'dayjs';
 import { DTO } from '@/models';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import settingsService from '@/services/settings.service';
 import Table from '@/components/layout/Table.vue';
 import Loading from '@/components/Loading.vue';
@@ -66,6 +76,10 @@ const searchModel = ref({
 const filteringTextList = ref([]);
 const isRegisterModal = ref(false);
 const selectedFilterInfo = ref(null);
+
+onMounted(() => {
+    getFilterList();
+});
 
 async function getFilterList(emitPageOptions = null) {
     try {
@@ -89,12 +103,13 @@ async function getFilterList(emitPageOptions = null) {
 }
 
 function openFilteringRegisterModal() {
+    selectedFilterInfo.value = null;
     isRegisterModal.value = true;
 }
 
 function openFilteringModifyModal(filterInfo) {
-    isRegisterModal.value = true;
     selectedFilterInfo.value = filterInfo;
+    isRegisterModal.value = true;
 }
 
 function deleteFilteringText(filterInfo) {
@@ -106,6 +121,7 @@ function deleteFilteringText(filterInfo) {
                 filterSeq: filterInfo.filterSeq,
             });
             ToastMessage.success('Success');
+            getFilterList();
         } catch (e) {
             console.log(e);
             ToastMessage.error('삭제 실패했습니다.');
@@ -115,4 +131,10 @@ function deleteFilteringText(filterInfo) {
     });
 }
 </script>
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+tbody {
+    tr {
+        cursor: pointer;
+    }
+}
+</style>

@@ -17,7 +17,7 @@ http.interceptors.request.use(
             request.baseURL = '';
         }
 
-        // request.headers.Authrozation = `3xCv29981_Tx091dUx98_84PTx905EB`;
+        request.headers.Authorization = `3xCv29981_Tx091dUx98_84PTx905EB`;
         return request;
     },
     (error) => {

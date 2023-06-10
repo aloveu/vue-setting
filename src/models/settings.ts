@@ -7,7 +7,7 @@ export interface GetReplyFilterInfoListRequest {
 export interface FilterInfo {
     filterSeq: number;
     filterWord: string;
-    filterStatus: string;
+    isActive: boolean;
     creatDt: string;
 }
 
@@ -19,8 +19,13 @@ export interface GetReplyFilterInfoListResponse {
 
 export interface AddReplyFilterInfoRequest {
     word: string;
-    isBlock: boolean;
+    isActive: boolean;
 }
 export interface DeleteReplyFilterInfoRequest {
     filterSeq: number;
+}
+
+export interface UpdateReplyFilterInfoRequest {
+    filterSeq: number;
+    isActive: boolean;
 }

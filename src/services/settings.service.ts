@@ -7,11 +7,15 @@ const settingsService = {
     },
 
     addReplyFilterInfo: (data: DTO.Settings.AddReplyFilterInfoRequest) => {
-        return http.get<any, void>('/admin/addReplyFilterInfo', { params: data });
+        return http.post<any, void>('/admin/addReplyFilterInfo', data);
+    },
+
+    updateReplyFilterInfo: (data: DTO.Settings.UpdateReplyFilterInfoRequest) => {
+        return http.post<any, void>('/admin/updateReplyFilterInfo', data);
     },
 
     deleteReplyFilterInfo: (data: DTO.Settings.DeleteReplyFilterInfoRequest) => {
-        return http.get<any, void>(`/admin/cmdReplyFilterInfoNonActive/${data.filterSeq}`, { params: data });
+        return http.get<any, void>(`/admin/deleteReplyFilterInfo/${data.filterSeq}`, { params: data });
     },
 };
 
